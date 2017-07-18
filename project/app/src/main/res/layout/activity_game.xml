@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_game"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:textAlignment="center"
+    android:background="#FF0033"
+    android:gravity="center_horizontal"
+    >
+
+    <RelativeLayout
+        android:id="@+id/HeaderBar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#CC0033">
+
+        <ImageView
+            android:id="@+id/highscore_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/highscore_icon"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="10dp"
+            />
+
+        <TextView
+            android:id="@+id/highscore_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="40sp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/highscore_icon"
+            android:paddingTop="10dp" />
+
+        <ImageButton
+            android:id="@+id/help_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/help_icon"/>
+    </RelativeLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <RelativeLayout
+        android:id="@+id/MainDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <com.example.adriansarstedt.words2.ArcView
+            android:id="@+id/ArcTimerView"
+            android:layout_width="700px"
+            android:layout_height="700px"
+            android:layout_centerInParent="true"/>
+
+        <RelativeLayout
+            android:id="@+id/FlipContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/AnimalImageView"
+                android:layout_width="610px"
+                android:layout_height="610px"
+                android:layout_centerInParent="true"/>
+
+            <TextView
+                android:id="@+id/ScoreDisplayView"
+                android:textSize="100dp"
+                android:layout_width="600px"
+                android:textColor="#ffffff"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textAlignment="center"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </Space>
+
+    <LinearLayout
+        android:id="@+id/InputContainer"
+        android:layout_width="2000px"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true">
+
+        <EditText
+            android:id="@+id/InputText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:inputType="textCapCharacters|textFilter"
+            android:textColorHighlight="#CC0033"
+            android:textColor="#ffffff"
+            android:text=""
+            android:background="@android:color/transparent"
+            android:textSize="50sp"
+            />
+
+        <EditText
+            android:id="@+id/InputTextEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:inputType="textCapCharacters|textVisiblePassword"
+            android:textColorHighlight="#CC0033"
+            android:background="@android:color/transparent"
+            android:text=""
+            android:textColor="#ffffff"
+            android:textSize="50sp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

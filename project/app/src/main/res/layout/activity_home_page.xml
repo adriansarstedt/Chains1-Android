@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_home_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:textAlignment="center"
+    android:background="#FF0033"
+    android:layout_centerHorizontal="true"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    >
+
+    <RelativeLayout
+        android:id="@+id/ActionBar"
+        android:background="#CC0033"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_alignParentLeft="true" >
+            <TextView
+                android:id="@+id/EggCountDisplay"
+                android:textSize="34sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/default_egg_count"/>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:src="@drawable/egg2"
+                />
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/help_icon"
+            />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/MainBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ActionBar"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/AppTitle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="@string/app_name"
+            android:textColor="#ffffff"
+            android:textSize="100sp"
+            android:paddingTop="20dp"
+            />
+
+        <ImageButton
+            android:id="@+id/PlayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/play2"
+            android:focusable="true"
+            android:layout_marginBottom="30dp"
+            android:onClick="NewGame"
+            />
+
+        <LinearLayout
+            android:id="@+id/OptionsBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            >
+
+            <ImageButton
+                android:id="@+id/ResearchCenterButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/researchcenter_icon"
+                android:layout_margin="10dp"
+                android:onClick="OpenResearchCenter"/>
+
+            <ImageButton
+                android:id="@+id/AchievementsButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/highscore_icon"
+                android:layout_margin="10dp"/>
+
+            <ImageButton
+                android:id="@+id/OptionsButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/options_icon"
+                android:layout_margin="10dp"
+                android:onClick="OptionsButtonPressed"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adViewHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_home_id"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp">
+    </com.google.android.gms.ads.AdView>
+
+</RelativeLayout>

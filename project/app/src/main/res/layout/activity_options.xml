@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_options"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:textAlignment="center"
+    android:background="#FF0033"
+    android:layout_centerHorizontal="true"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    >
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adViewOptions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_home_id"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp">
+    </com.google.android.gms.ads.AdView>
+
+    <RelativeLayout
+        android:id="@+id/BottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#CCCC0033"
+        android:layout_alignParentBottom="true">
+
+        <ImageButton
+            android:id="@+id/HomeButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/home_icon"
+            android:onClick="ReturnHome"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/OptionsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="80sp"
+        android:text="Options"
+        android:textColor="#ffffff"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/adViewOptions"/>
+
+    <RelativeLayout
+        android:id="@+id/ButtonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/OptionsTitle">
+
+        <RelativeLayout
+            android:id="@+id/DifficultyContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="40dp"
+            android:paddingRight="40dp"
+            android:paddingLeft="40dp">
+
+            <ImageButton
+                android:id="@+id/DifficultyButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/hare_icon"
+                android:onClick="DificultyButtonPressed"/>
+            <TextView
+                android:id="@+id/DifficultyLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/DifficultyButton"
+                android:paddingTop="5dp"
+                android:text="Difficulty"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/SoundContainer"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/DifficultyContainer"
+            android:paddingTop="40dp">
+
+            <ImageButton
+                android:id="@+id/SoundButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/sound_on_icon"
+                android:onClick="SoundButtonPressed"/>
+            <TextView
+                android:id="@+id/SoundLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/SoundButton"
+                android:paddingTop="5dp"
+                android:text="Sound"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ResetContainer"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/DifficultyContainer"
+            android:paddingTop="40dp">
+
+            <ImageButton
+                android:id="@+id/ResetButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/restore_icon"
+                android:onClick="ResetButtonPressed"/>
+            <TextView
+                android:id="@+id/ResetLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/ResetButton"
+                android:paddingTop="5dp"
+                android:text="Reset"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/AceContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/DifficultyContainer"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="40dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp">
+
+            <ImageButton
+                android:id="@+id/AceButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/ace_logo"
+                android:onClick="AceButtonPressed"/>
+            <TextView
+                android:id="@+id/AceLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/AceButton"
+                android:paddingTop="5dp"
+                android:text="Ace"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/CreditsContainer"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/AceContainer"
+            android:layout_below="@id/SoundContainer"
+            android:paddingTop="40dp">
+
+            <ImageButton
+                android:id="@+id/CreditsButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/credits_icon"
+                android:onClick="CreditsButtonPressed"/>
+            <TextView
+                android:id="@+id/CreditsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/CreditsButton"
+                android:paddingTop="5dp"
+                android:text="Credits"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_entry_info"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    tools:context="com.example.adriansarstedt.words2.EntryInfo">
+
+    <RelativeLayout
+        android:id="@+id/ImageFrame"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:background="@drawable/image_backround"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="20dp">
+
+        <ImageView
+            android:id="@+id/Image"
+            android:layout_width="230dp"
+            android:layout_height="230dp"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/MainScroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="280dp"
+        android:paddingBottom="30dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/EntryName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="35dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="The Crocodile"
+                android:background="@drawable/info_tab_top" />
+
+            <TextView
+                android:id="@+id/InfoContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/EntryName"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:textColor="#cc381900"
+                android:background="#eef8f6ed"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@drawable/info_tab_bottom"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <ImageButton
+        android:id="@+id/BackButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/back_icon"
+        android:onClick="returnToResearchCenter"/>
+
+</RelativeLayout>
