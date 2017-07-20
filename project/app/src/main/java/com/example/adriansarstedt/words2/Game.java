@@ -411,12 +411,12 @@ public class Game extends AppCompatActivity {
     public void GameOver() {
         run = false;
 
-        Intent GameOverIntent = new Intent(this, GameOver.class);
+        Intent GameOverIntent = new Intent(this, GameOverRevised.class);
         GameOverIntent.putExtra("score", score);
         GameOverIntent.putExtra("newlyDiscoveredAnimals", TextUtils.join("-", NewlyDiscoveredAnimals));
         startActivity(GameOverIntent);
 
-        overridePendingTransition(R.anim.pull_in_right, R.anim.pull_out_left);
+        //overridePendingTransition(R.anim.pull_in_right, R.anim.pull_out_left);
     }
 
     public void StartIntroAnimation() {

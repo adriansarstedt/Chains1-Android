@@ -95,7 +95,7 @@
             android:textSize="80sp"
             android:textAlignment="center"
             android:textColor="#ddc08e63"
-            android:text="A" />
+            />
         <ImageButton
             android:id="@+id/LeftButton"
             android:layout_width="30dp"

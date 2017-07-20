@@ -8,6 +8,8 @@
     <string name="score_text">Score:</string>
     <string name="high_score_text">High Score:</string>
     <string name="new_high_score_text">New High Score!</string>
+    <string name="well_done">Well Done!</string>
+    <string name="press_to_retry">PRESS TO RETRY</string>
 
     <string name="difficulty_title">Difficulty</string>
     <string name="difficulty_discription">Change how long you get for each turn to either 10 or 30 seconds</string>
