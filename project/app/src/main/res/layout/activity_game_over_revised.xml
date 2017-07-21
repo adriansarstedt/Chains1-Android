@@ -30,17 +30,86 @@
             android:paddingTop="20dp"
             />
 
-        <TextView
-            android:id="@+id/ScoreTitle"
+        <ViewAnimator
+            android:id="@+id/AchievementViewAnimator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textColor="#ffffff"
-            android:textSize="80sp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            />
+            android:gravity="center_horizontal"
+            android:textAlignment="center">
+
+            <TextView
+                android:id="@+id/ScoreLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="80sp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/EggLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff"
+                    android:textSize="80sp"
+                    android:text="1"
+                    />
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:gravity="center"
+                    android:src="@drawable/egg2"
+                    />
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAlignment="center">
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/highscore_bare_icon_large"
+                    />
+
+                <TextView
+                    android:id="@+id/HighScoreLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff"
+                    android:textSize="80sp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="1"
+                    android:layout_centerInParent="true"
+                    />
+
+
+            </RelativeLayout>
+
+        </ViewAnimator>
+
     </LinearLayout>
 
     <TextView
@@ -64,5 +133,15 @@
         android:layout_alignParentTop="true"
         android:background="@drawable/back_icon"
         android:onClick="ReturnHome"/>
+
+    <Button
+        android:id="@+id/RetryButton"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/BackButton"
+        android:background="@android:color/transparent"
+        android:onClick="NewGame"
+        />
 
 </RelativeLayout>

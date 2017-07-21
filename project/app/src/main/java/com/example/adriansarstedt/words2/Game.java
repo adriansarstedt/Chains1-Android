@@ -389,13 +389,16 @@ public class Game extends AppCompatActivity {
         InputText1.setText(firstPart);
         InputTextEdit.setText(secondPart);
 
+        final int initialWidth = InputTextEdit.getWidth();
+
         InputTextEdit.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 InputTextEdit.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                int translationA = viewWidth/2-(InputText1.getWidth()+InputTextEdit.getWidth())/2,
-                        translationB = translationA + InputText1.getWidth();
+                int translationA = viewWidth/2-(InputText1.getWidth()+InputTextEdit.getWidth())/2;
+                int diff = InputText1.getWidth()+InputTextEdit.getWidth()-initialWidth;
+                int translationB = translationA+InputText1.getWidth()-diff;
 
                 ObjectAnimator outAnimation = ObjectAnimator.ofFloat(InputText1, "X", translationA, -1000);
                 outAnimation.setDuration(1000);
