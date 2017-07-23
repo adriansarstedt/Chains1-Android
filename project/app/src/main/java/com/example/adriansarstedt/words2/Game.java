@@ -45,7 +45,8 @@ public class Game extends AppCompatActivity {
     View MainDisplay, FlipContainer;
 
     Character lastLetter, inputLetter;
-    int score = 0, viewWidth = 2000, HighScore, turnTime;
+    int score = 0, viewWidth = 2000, HighScore, turnTime, NewEggCount = 0;
+    Random RandomGenerator;
     boolean run = true, Sound;
 
     Bitmap dr;
@@ -66,6 +67,7 @@ public class Game extends AppCompatActivity {
         }
 
         InputAnimalList = new ArrayList<>();
+        RandomGenerator = new Random();
 
         arcView = (ArcView) findViewById(R.id.ArcTimerView);
         AnimalImageView = (ImageView) findViewById(R.id.AnimalImageView);
@@ -245,6 +247,13 @@ public class Game extends AppCompatActivity {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         arcView.startAnimation(animationShrink);
+
+                        int random = RandomGenerator.nextInt(50);
+                        
+                        if (random<=10) {
+                            NewEggCount += 1;
+                            animateIcon();
+                        }
                     }
                 });
 
@@ -411,11 +420,16 @@ public class Game extends AppCompatActivity {
         });
     }
 
+    public void animateIcon() {
+        System.out.println("------ displaying icon ------");
+    }
+
     public void GameOver() {
         run = false;
 
         Intent GameOverIntent = new Intent(this, GameOverRevised.class);
         GameOverIntent.putExtra("score", score);
+        GameOverIntent.putExtra("NewEggCount", NewEggCount);
         GameOverIntent.putExtra("newlyDiscoveredAnimals", TextUtils.join("-", NewlyDiscoveredAnimals));
         startActivity(GameOverIntent);
 

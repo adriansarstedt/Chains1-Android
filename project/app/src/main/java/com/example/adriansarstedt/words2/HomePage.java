@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -46,6 +47,9 @@ public class HomePage extends AppCompatActivity {
         Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Lato-Thin.ttf");
         AppTitle.setTypeface(custom_font);
         EggCountDisplay.setTypeface(custom_font);
+
+        int EggCount = PreferenceManager.getDefaultSharedPreferences(this).getInt("EggCount", 0);
+        EggCountDisplay.setText(String.valueOf(EggCount));
 
         /*
         final Handler animationStartHandler = new Handler();

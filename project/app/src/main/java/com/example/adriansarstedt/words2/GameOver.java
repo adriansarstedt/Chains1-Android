@@ -10,12 +10,9 @@ import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class GameOver extends Activity {

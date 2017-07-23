@@ -36,14 +36,15 @@ public class GameOverRevised extends AppCompatActivity {
         }
 
         int Score = getIntent().getIntExtra("score", 0);
+        int NewEggCount = getIntent().getIntExtra("NewEggCount", 0);
 
         String NewlyDiscovered = getIntent().getStringExtra("newlyDiscoveredAnimals");
         String PreviouslyDiscovered = PreferenceManager.getDefaultSharedPreferences(this).getString("DiscoveredAnimals", "");
 
         if (!PreviouslyDiscovered.equals("") && (!NewlyDiscovered.equals(""))) {
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putString("DiscoveredAnimals", PreviouslyDiscovered+"-"+NewlyDiscovered).commit();
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putString("DiscoveredAnimals", PreviouslyDiscovered+"-"+NewlyDiscovered).apply();
         } else if (PreviouslyDiscovered.equals("")) {
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putString("DiscoveredAnimals", NewlyDiscovered).commit();
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putString("DiscoveredAnimals", NewlyDiscovered).apply();
         }
 
         SharedPreferences HighScoreManager = this.getSharedPreferences("HighScores", Context.MODE_PRIVATE);
@@ -65,6 +66,7 @@ public class GameOverRevised extends AppCompatActivity {
 
         ScoreLabel.setText(String.valueOf(Score));
         HighScoreLabel.setText(String.valueOf(HighScore));
+        EggLabel.setText(String.valueOf(NewEggCount));
 
         Focus = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.grow_shrink);
@@ -84,6 +86,11 @@ public class GameOverRevised extends AppCompatActivity {
                 FocusHandler.postDelayed(this, 2000);
             }
         }, 1000);
+
+        int EggCount = PreferenceManager.getDefaultSharedPreferences(this).getInt("EggCount", 0);
+        EggCount = EggCount + NewEggCount;
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("EggCount", EggCount).apply();
+
     }
 
     public void ReturnHome(View view) {
