@@ -1,6 +1,8 @@
 package com.example.adriansarstedt.words2;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -123,7 +125,11 @@ public class Options extends AppCompatActivity {
     }
 
     public void ResetButtonPressed(View view) {
-
+        Intent AlertPopupIntent = new Intent(this, AlertPopup.class);
+        AlertPopupIntent.putExtra("Title", "Are you sure?");
+        AlertPopupIntent.putExtra("Description", "You will lose all your discoveries, high scores and eggs!");
+        startActivity(AlertPopupIntent);
+        overridePendingTransition(0, 0);
     }
 
     public void CreditsButtonPressed(View view) {

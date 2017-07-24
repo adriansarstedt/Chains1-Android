@@ -1,6 +1,7 @@
 package com.example.adriansarstedt.words2;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -47,10 +51,12 @@ public class Game extends AppCompatActivity {
     Character lastLetter, inputLetter;
     int score = 0, viewWidth = 2000, HighScore, turnTime, NewEggCount = 0;
     Random RandomGenerator;
-    boolean run = true, Sound;
+    boolean run = true, Sound, PreviouslyDiscovered;
 
-    Bitmap dr;
+    Bitmap dr, drOriginal;
     Animation FlipStart, FlipEnd;
+    ArcGrowAnimation animationGrow;
+    ValueAnimator SaturationAnimator;
     MediaPlayer CorrentSound;
     Handler focusHandler = new Handler(), messageHandler = new Handler();
 
@@ -179,6 +185,47 @@ public class Game extends AppCompatActivity {
                 return false;
             }
         });
+
+        animationGrow = new ArcGrowAnimation(arcView);
+        animationGrow.setDuration(1000);
+
+        SaturationAnimator = ValueAnimator.ofFloat(0f, 1f);
+        SaturationAnimator.setDuration(2000);
+        SaturationAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                dr = toGrayscale(drOriginal, SaturationAnimator.getAnimatedFraction());
+                AnimalImageView.setImageBitmap(dr);
+                System.out.println("ANIMATOR UPDATE!!!!!!!!");
+            }
+        });
+
+        animationGrow.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                arcView.startAnimation(animationShrink);
+
+                if (!PreviouslyDiscovered) {
+                    SaturationAnimator.start();
+                    System.out.println("-------- animator test ------");
+                }
+
+                int random = RandomGenerator.nextInt(50);
+
+                if (random<=10) {
+                    NewEggCount += 1;
+                    animateIcon();
+                }
+            }
+        });
     }
 
     public int animal(String Input) {
@@ -227,39 +274,22 @@ public class Game extends AppCompatActivity {
                 score = score + 1;
                 FlipContainer.startAnimation(FlipStart);
 
-                if (!PreviouslyDiscoveredAnimals.contains(Globals.Animals.get(A))) {
-                    NewlyDiscoveredAnimals.add(Globals.Animals.get(A));
-                }
-
-                Animation animationGrow = new ArcGrowAnimation(arcView);
-                animationGrow.setDuration(1000);
-                arcView.startAnimation(animationGrow);
-
-                animationGrow.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        arcView.startAnimation(animationShrink);
-
-                        int random = RandomGenerator.nextInt(50);
-                        
-                        if (random<=10) {
-                            NewEggCount += 1;
-                            animateIcon();
-                        }
-                    }
-                });
-
-                dr = BitmapFactory.decodeResource(getResources(),
+                drOriginal = BitmapFactory.decodeResource(getResources(),
                         getResources().getIdentifier(Globals.Animals.get(A).toLowerCase() + "imagesmall", "drawable",
                                 getPackageName()));
+
+                if (!PreviouslyDiscoveredAnimals.contains(Globals.Animals.get(A))) {
+                    PreviouslyDiscovered = false;
+
+                    NewlyDiscoveredAnimals.add(Globals.Animals.get(A));
+                    dr = toGrayscale(drOriginal, 0);
+                } else {
+                    PreviouslyDiscovered = true;
+                    dr = drOriginal;
+                }
+
+                animationGrow.updateAngle();
+                arcView.startAnimation(animationGrow);
 
                 focusHandler.removeCallbacksAndMessages(null);
                 focusHandler.postDelayed(new Runnable() {
@@ -443,5 +473,21 @@ public class Game extends AppCompatActivity {
         ObjectAnimator titleAnimator= ObjectAnimator.ofFloat(InputTextEdit, "translationX", 1000, 0);
         titleAnimator.setDuration(1000);
         titleAnimator.start();
+    }
+
+    private Bitmap toGrayscale(Bitmap bmpOriginal, float sat) {
+        int width, height;
+        height = bmpOriginal.getHeight();
+        width = bmpOriginal.getWidth();
+
+        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(bmpGrayscale);
+        Paint paint = new Paint();
+        ColorMatrix cm = new ColorMatrix();
+        cm.setSaturation(sat);
+        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+        paint.setColorFilter(f);
+        c.drawBitmap(bmpOriginal, 0, 0, paint);
+        return bmpGrayscale;
     }
 }

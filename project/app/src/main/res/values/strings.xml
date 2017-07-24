@@ -10,6 +10,9 @@
     <string name="new_high_score_text">New High Score!</string>
     <string name="well_done">Well Done!</string>
     <string name="press_to_retry">PRESS TO RETRY</string>
+    <string name="alert_title_default">Are you sure?</string>
+    <string name="cancel_default">Cancel</string>
+    <string name="continue_default">Continue</string>
 
     <string name="difficulty_title">Difficulty</string>
     <string name="difficulty_discription">Change how long you get for each turn to either 10 or 30 seconds</string>

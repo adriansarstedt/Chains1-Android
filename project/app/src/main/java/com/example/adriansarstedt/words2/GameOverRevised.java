@@ -50,6 +50,12 @@ public class GameOverRevised extends AppCompatActivity {
         SharedPreferences HighScoreManager = this.getSharedPreferences("HighScores", Context.MODE_PRIVATE);
         int HighScore = HighScoreManager.getInt(Globals.User+Globals.Difficulty, 0);
 
+        if (Score > HighScore) {
+            SharedPreferences.Editor HighScoreEditor = HighScoreManager.edit();
+            HighScoreEditor.putInt(Globals.User+Globals.Difficulty, Score);
+            HighScoreEditor.apply();
+        }
+
         WellDoneTitle = (TextView)findViewById(R.id.WellDoneTitle);
         ScoreLabel = (TextView)findViewById(R.id.ScoreLabel);
         HighScoreLabel = (TextView)findViewById(R.id.HighScoreLabel);

@@ -29,7 +29,10 @@
         <activity
             android:name=".EntryInfo"
             android:theme="@style/Transparent" />
-        <activity android:name=".GameOverRevised"></activity>
+        <activity android:name=".GameOverRevised" />
+        <activity
+            android:name=".AlertPopup"
+            android:theme="@style/Transparent" />
     </application>
 
 </manifest>

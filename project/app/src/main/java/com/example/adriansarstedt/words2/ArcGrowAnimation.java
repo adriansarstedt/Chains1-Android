@@ -18,6 +18,10 @@ public class ArcGrowAnimation extends Animation {
         this.arcView = arcView;
     }
 
+    public void updateAngle() {
+        this.oldAngle = arcView.getArcAngle();
+    }
+
     @Override
     protected void applyTransformation(float interpolatedTime, Transformation transformation) {
         float angle = oldAngle - ((360+oldAngle) * (interpolatedTime));
