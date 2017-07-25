@@ -97,7 +97,7 @@ public class Game extends AppCompatActivity {
         HighScore = HighScoreManager.getInt(Globals.User+Globals.Difficulty, 0);
         String Difficulty = PreferenceManager.getDefaultSharedPreferences(this).getString("Difficulty", "Slow");
         String SoundText = PreferenceManager.getDefaultSharedPreferences(this).getString("Sound", "On");
-        String DiscoveredAnimalsStorage = PreferenceManager.getDefaultSharedPreferences(this).getString("DiscoveredAnimals", "defaultStringIfNothingFound");
+        String DiscoveredAnimalsStorage = PreferenceManager.getDefaultSharedPreferences(this).getString("DiscoveredAnimals", "researchcenter");
         PreviouslyDiscoveredAnimals = new ArrayList<String>(Arrays.asList(DiscoveredAnimalsStorage.split("-")));
         NewlyDiscoveredAnimals = new ArrayList<String>();
 
@@ -196,7 +196,6 @@ public class Game extends AppCompatActivity {
             public void onAnimationUpdate(ValueAnimator animation) {
                 dr = toGrayscale(drOriginal, SaturationAnimator.getAnimatedFraction());
                 AnimalImageView.setImageBitmap(dr);
-                System.out.println("ANIMATOR UPDATE!!!!!!!!");
             }
         });
 

@@ -1,5 +1,6 @@
 package com.example.adriansarstedt.words2;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,11 +13,19 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GameOverRevised extends AppCompatActivity {
 
@@ -24,6 +33,11 @@ public class GameOverRevised extends AppCompatActivity {
     Handler FocusHandler = new Handler();
     Animation Focus;
     ViewAnimator AchievementViewAnimator;
+    ArrayList<String> NewlyDiscoveredAnimalsList;
+    GridView AnimalDisplayRow1, AnimalDisplayRow2;
+    CustomGridAdapter AnimalAdapterRow1, AnimalAdapterRow2;
+
+    boolean adjusted1 = false, adjusted2 = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +53,7 @@ public class GameOverRevised extends AppCompatActivity {
         int NewEggCount = getIntent().getIntExtra("NewEggCount", 0);
 
         String NewlyDiscovered = getIntent().getStringExtra("newlyDiscoveredAnimals");
+        NewlyDiscoveredAnimalsList = new ArrayList<String>(Arrays.asList(NewlyDiscovered.split("-")));
         String PreviouslyDiscovered = PreferenceManager.getDefaultSharedPreferences(this).getString("DiscoveredAnimals", "");
 
         if (!PreviouslyDiscovered.equals("") && (!NewlyDiscovered.equals(""))) {
@@ -96,6 +111,69 @@ public class GameOverRevised extends AppCompatActivity {
         int EggCount = PreferenceManager.getDefaultSharedPreferences(this).getInt("EggCount", 0);
         EggCount = EggCount + NewEggCount;
         PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("EggCount", EggCount).apply();
+
+        final ArrayList<String> AnimalListRow1 = new ArrayList<>(), AnimalListRow2 = new ArrayList<>();
+
+        if (NewlyDiscoveredAnimalsList.size()>5) {
+            AnimalListRow1.addAll(NewlyDiscoveredAnimalsList.subList(0,5));
+
+            if (NewlyDiscoveredAnimalsList.size()>8) {
+                AnimalListRow2.addAll(NewlyDiscoveredAnimalsList.subList(5, 8));
+            } else {
+                AnimalListRow2.addAll(NewlyDiscoveredAnimalsList.subList(5, NewlyDiscoveredAnimalsList.size()-1));
+            }
+            AnimalListRow2.add(AnimalListRow2.size(), "researchcenter");
+        } else {
+            NewlyDiscoveredAnimalsList.add(NewlyDiscoveredAnimalsList.size(), "researchcenter");
+            AnimalListRow1.addAll(NewlyDiscoveredAnimalsList);
+        }
+
+        AnimalDisplayRow1 = (GridView) findViewById(R.id.DiscoveredAnimalDisplay1);
+        AnimalDisplayRow2 = (GridView) findViewById(R.id.DiscoveredAnimalDisplay2);
+        AnimalAdapterRow1 = new CustomGridAdapter(GameOverRevised.this, AnimalListRow1);
+        AnimalAdapterRow2 = new CustomGridAdapter(GameOverRevised.this, AnimalListRow2);
+        AnimalDisplayRow1.setAdapter(AnimalAdapterRow1);
+        AnimalDisplayRow2.setAdapter(AnimalAdapterRow2);
+
+        AnimalDisplayRow1.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (!adjusted1) {
+                    int paddingHorizontal = AnimalDisplayRow1.getPaddingLeft();
+                    int paddingVertical = AnimalDisplayRow1.getPaddingTop();
+                    int spacingHorizontal = AnimalDisplayRow1.getHorizontalSpacing();
+                    int width = AnimalDisplayRow1.getColumnWidth();
+                    int numCollums1 = AnimalListRow1.size();
+
+                    ViewGroup.LayoutParams layoutParams = AnimalDisplayRow1.getLayoutParams();
+                    layoutParams.width = 2*paddingHorizontal+numCollums1*width+(numCollums1-1)*spacingHorizontal;
+                    layoutParams.height = 2*paddingVertical+width;
+                    AnimalDisplayRow1.setLayoutParams(layoutParams);
+
+                    adjusted1 = true;
+                }
+            }
+        });
+
+        AnimalDisplayRow2.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (!adjusted2) {
+                    int paddingHorizontal = AnimalDisplayRow2.getPaddingLeft();
+                    int paddingVertical = AnimalDisplayRow2.getPaddingTop();
+                    int spacingHorizontal = AnimalDisplayRow2.getHorizontalSpacing();
+                    int width = AnimalDisplayRow2.getColumnWidth();
+                    int numCollums2 = AnimalListRow2.size();
+
+                    ViewGroup.LayoutParams layoutParams = AnimalDisplayRow2.getLayoutParams();
+                    layoutParams.width = 2*paddingHorizontal+numCollums2*width+(numCollums2-1)*spacingHorizontal;
+                    layoutParams.height = 2*paddingVertical+width;
+                    AnimalDisplayRow2.setLayoutParams(layoutParams);
+
+                    adjusted2 = true;
+                }
+            }
+        });
 
     }
 

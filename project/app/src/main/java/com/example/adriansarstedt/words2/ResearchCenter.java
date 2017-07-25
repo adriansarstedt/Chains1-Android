@@ -63,7 +63,6 @@ public class ResearchCenter extends AppCompatActivity {
             public void run() {
                 MainGrid.setAdapter(new CustomGridAdapter(ResearchCenter.this, Globals.Animals));
                 MainGrid.setFriction(ViewConfiguration.getScrollFriction() * 7);
-                System.out.print("test0");
                 MainGrid.setOnItemClickListener(TileClickListener);
                 gameStartHandler.removeCallbacks(this);
             }

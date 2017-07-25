@@ -101,7 +101,7 @@ public class AlertPopup extends Activity {
     public void Continue(View view) {
         runExitAnimation();
 
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("DiscoveredAnimals", "").apply();
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("DiscoveredAnimals", "researchcenter").apply();
         PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("EggCount", 0).apply();
 
         SharedPreferences HighScoreManager = this.getSharedPreferences("HighScores", Context.MODE_PRIVATE);
