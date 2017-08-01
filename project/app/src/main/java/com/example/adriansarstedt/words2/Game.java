@@ -36,11 +36,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.RunnableFuture;
 
 public class Game extends AppCompatActivity {
 
     ArcView arcView;
-    ArcAngleAnimation animationShrink;
+    ArcShrinkAnimation animationShrink, arcDiscoveryAnimation;
 
     EditText InputTextEdit;
     TextView InputText1, ScoreDisplay, HighScoreDisplay;
@@ -155,7 +156,7 @@ public class Game extends AppCompatActivity {
     }
 
     public void setupAnimations() {
-        animationShrink = new ArcAngleAnimation(arcView, 360);
+        animationShrink = new ArcShrinkAnimation(arcView, 360);
         animationShrink.setDuration(turnTime);
         arcView.startAnimation(animationShrink);
 
@@ -186,9 +187,6 @@ public class Game extends AppCompatActivity {
             }
         });
 
-        animationGrow = new ArcGrowAnimation(arcView);
-        animationGrow.setDuration(1000);
-
         SaturationAnimator = ValueAnimator.ofFloat(0f, 1f);
         SaturationAnimator.setDuration(2000);
         SaturationAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -196,6 +194,33 @@ public class Game extends AppCompatActivity {
             public void onAnimationUpdate(ValueAnimator animation) {
                 dr = toGrayscale(drOriginal, SaturationAnimator.getAnimatedFraction());
                 AnimalImageView.setImageBitmap(dr);
+            }
+        });
+
+        animationGrow = new ArcGrowAnimation(arcView);
+        animationGrow.setDuration(1000);
+
+        arcDiscoveryAnimation = new ArcShrinkAnimation(arcView, 360);
+        arcDiscoveryAnimation.setDuration(1000);
+
+        arcDiscoveryAnimation.setAnimationListener(new Animation.AnimationListener()
+        {
+            @Override
+            public void onAnimationStart(Animation animation){
+                Animation Focus = AnimationUtils.loadAnimation(getApplicationContext(),
+                        R.anim.grow_shrink);
+                MainDisplay.startAnimation(Focus);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation){}
+
+            @Override
+            public void onAnimationEnd(Animation animation)
+            {
+                SaturationAnimator.start();
+                animationGrow.updateAngle();
+                arcView.startAnimation(animationGrow);
             }
         });
 
@@ -211,11 +236,6 @@ public class Game extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 arcView.startAnimation(animationShrink);
-
-                if (!PreviouslyDiscovered) {
-                    SaturationAnimator.start();
-                    System.out.println("-------- animator test ------");
-                }
 
                 int random = RandomGenerator.nextInt(50);
 
@@ -282,13 +302,16 @@ public class Game extends AppCompatActivity {
 
                     NewlyDiscoveredAnimals.add(Globals.Animals.get(A));
                     dr = toGrayscale(drOriginal, 0);
+
+                    arcDiscoveryAnimation.updateAngle();
+                    arcView.startAnimation(arcDiscoveryAnimation);
                 } else {
                     PreviouslyDiscovered = true;
                     dr = drOriginal;
-                }
 
-                animationGrow.updateAngle();
-                arcView.startAnimation(animationGrow);
+                    animationGrow.updateAngle();
+                    arcView.startAnimation(animationGrow);
+                }
 
                 focusHandler.removeCallbacksAndMessages(null);
                 focusHandler.postDelayed(new Runnable() {
@@ -327,7 +350,7 @@ public class Game extends AppCompatActivity {
                     mp.start();
                 }
 
-            } else if (Globals.Animals.get(A).charAt(0) == inputLetter) {
+            } else if (Globals.Animals.get(A).charAt(0) != inputLetter) {
                 displayMessage("Sneaky!", true);
 
                 if (Sound) {

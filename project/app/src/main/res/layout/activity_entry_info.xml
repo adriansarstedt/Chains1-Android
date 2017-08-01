@@ -10,17 +10,17 @@
 
     <RelativeLayout
         android:id="@+id/ImageFrame"
-        android:layout_width="240dp"
-        android:layout_height="240dp"
-        android:background="@drawable/image_backround"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="@drawable/image_background_undiscovered"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:layout_marginBottom="20dp">
 
         <ImageView
             android:id="@+id/Image"
-            android:layout_width="230dp"
-            android:layout_height="230dp"
+            android:layout_width="270dp"
+            android:layout_height="270dp"
             android:layout_centerInParent="true" />
 
     </RelativeLayout>
@@ -29,7 +29,7 @@
         android:id="@+id/MainScroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="280dp"
+        android:paddingTop="350dp"
         android:paddingBottom="30dp"
         android:clipToPadding="false"
         android:overScrollMode="never">
@@ -47,7 +47,7 @@
                 android:textSize="35dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:text="The Crocodile"
+                android:textColor="#ffffff"
                 android:background="@drawable/info_tab_top" />
 
             <TextView

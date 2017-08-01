@@ -32,6 +32,7 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -44,7 +45,8 @@ public class EntryInfo extends Activity {
     int position, imageY, imageX, imageWidth, imageHeight, ImageTranslationX, ImageTranslationY;
     float ScaleX, ScaleY;
 
-    View ImageFrame, MainScroll;
+    View ImageFrame;
+    ScrollView MainScroll;
     ImageView EntryImage;
     TextView EntryName;
     boolean Discovered;
@@ -59,7 +61,7 @@ public class EntryInfo extends Activity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
-            window.setStatusBarColor(Color.parseColor("#FF0033"));
+            window.setStatusBarColor(Color.parseColor("#CC0033"));
         }
 
         Bundle bundle = getIntent().getExtras();
@@ -121,10 +123,10 @@ public class EntryInfo extends Activity {
                         "drawable", getPackageName()));
 
         if (Discovered) {
-            ImageFrame.setBackgroundResource(R.drawable.image_background_discovered);
+            ImageFrame.setBackgroundResource(R.drawable.image_background_discovered_large);
             EntryName.setText("The " + Globals.Animals.get(position));
         } else {
-            ImageFrame.setBackgroundResource(R.drawable.image_backround);
+            ImageFrame.setBackgroundResource(R.drawable.image_background_undiscovered_large);
             ImageBitmap = toGrayscale(ImageBitmap);
             EntryName.setText("The " + generateSecretString(Globals.Animals.get(position)));
         }
@@ -155,7 +157,7 @@ public class EntryInfo extends Activity {
         bgAnim.setDuration(1000);
         bgAnim.start();
 
-        MainScroll = (View) findViewById(R.id.MainScroll);
+        MainScroll = (ScrollView) findViewById(R.id.MainScroll);
         MainScroll.setTranslationY(1000);
         MainScroll.animate().setDuration(1000).translationY(0).
                 withEndAction(new Runnable() {
@@ -177,7 +179,13 @@ public class EntryInfo extends Activity {
                         scaleX(ScaleX).scaleY(ScaleY).
                         translationX(ImageTranslationX).translationY(ImageTranslationY).
                         withEndAction(endAction);
-                MainScroll.animate().setDuration(1000).translationY(1000);
+                MainScroll.animate().setDuration(1000).translationY(MainScroll.getHeight());
+            }
+        });
+
+        MainScroll.post(new Runnable() {
+            public void run() {
+                MainScroll.smoothScrollTo(100, MainScroll.getTop());
             }
         });
 

@@ -72,21 +72,11 @@ public class AlertPopup extends Activity {
     public void runExitAnimation() {
         View Popup = findViewById(R.id.PopupView);
 
-        Animation SlideOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pull_out_right);
-        Popup.startAnimation(SlideOut);
-
-        SlideOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
+        Popup.animate().setDuration(500).translationX(1500).withEndAction(new Runnable() {
+            public void run() {
                 finish();
                 overridePendingTransition(0, 0);
             }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
         });
 
         ObjectAnimator bgAnim = ObjectAnimator.ofInt(Background, "alpha", 255, 0);

@@ -18,7 +18,7 @@ public class ArcView extends View {
 
         super(context, attrs);
 
-        arcAngle = 360;
+        arcAngle = -360;
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);

@@ -69,7 +69,7 @@ public class CustomGridAdapter extends ArrayAdapter<String> {
         if (Discovered) {
             holder.Tile.setBackgroundResource(R.drawable.image_background_discovered);
         } else {
-            holder.Tile.setBackgroundResource(R.drawable.image_backround);
+            holder.Tile.setBackgroundResource(R.drawable.image_background_undiscovered);
         }
 
         if (cancelPotentialWork(id, holder.Picture)) {

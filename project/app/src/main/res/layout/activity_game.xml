@@ -52,6 +52,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
+
+        <ImageView
+            android:id="@+id/DiscoveredMargin"
+            android:layout_width="610px"
+            android:layout_height="610px"
+            android:layout_centerInParent="true"
+            android:background="@drawable/image_background_discovered"/>
+
         <com.example.adriansarstedt.words2.ArcView
             android:id="@+id/ArcTimerView"
             android:layout_width="700px"
@@ -79,6 +87,7 @@
                 android:layout_centerInParent="true"
                 android:textAlignment="center"/>
         </RelativeLayout>
+
     </RelativeLayout>
 
     <Space
