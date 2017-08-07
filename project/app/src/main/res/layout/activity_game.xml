@@ -40,7 +40,8 @@
             android:layout_height="50dp"
             android:layout_margin="10dp"
             android:layout_alignParentRight="true"
-            android:background="@drawable/help_icon"/>
+            android:background="@drawable/researchcenterimagesmall"
+            android:onClick="help"/>
     </RelativeLayout>
 
     <Space
