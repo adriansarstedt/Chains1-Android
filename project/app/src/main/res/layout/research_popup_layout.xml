@@ -38,6 +38,7 @@
             android:id="@+id/ItemEggCount1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20dp"
             android:layout_toLeftOf="@id/ItemEggImage1"
             android:layout_centerVertical="true"
             android:text="4" />
@@ -76,6 +77,7 @@
             android:id="@+id/ItemEggCount2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20dp"
             android:layout_toLeftOf="@id/ItemEggImage2"
             android:layout_centerVertical="true"
             android:text="6" />
@@ -114,6 +116,7 @@
             android:id="@+id/ItemEggCount3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20dp"
             android:layout_toLeftOf="@id/ItemEggImage3"
             android:layout_centerVertical="true"
             android:textAlignment="center"

@@ -2,6 +2,7 @@ package com.example.adriansarstedt.words2;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,11 +19,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
@@ -32,7 +38,12 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -60,6 +71,8 @@ public class Game extends AppCompatActivity {
     ValueAnimator SaturationAnimator;
     MediaPlayer CorrentSound;
     Handler focusHandler = new Handler(), messageHandler = new Handler();
+
+    PopupWindow popup;
 
     public ArrayList<String> InputAnimalList, NewlyDiscoveredAnimals, PreviouslyDiscoveredAnimals;
 
@@ -361,27 +374,6 @@ public class Game extends AppCompatActivity {
         }
     }
 
-    private RoundedBitmapDrawable createRoundedBitmapDrawable(Bitmap bitmap){
-
-        int bitmapWidth = bitmap.getWidth();
-        int bitmapHeight = bitmap.getHeight();
-        int bitmapRadius = Math.min(bitmapWidth,bitmapHeight)/2;
-        int bitmapSquareWidth = Math.min(bitmapWidth,bitmapHeight);
-
-        Bitmap roundedBitmap = Bitmap.createBitmap(bitmapSquareWidth, bitmapSquareWidth, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(roundedBitmap);
-
-        int x = bitmapSquareWidth - bitmapWidth;
-        int y = bitmapSquareWidth - bitmapHeight;
-
-        canvas.drawBitmap(bitmap, x, y, null);
-        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(),roundedBitmap);
-        roundedBitmapDrawable.setCornerRadius(bitmapRadius);
-        roundedBitmapDrawable.setAntiAlias(true);
-        return roundedBitmapDrawable;
-
-    }
-
     public void displayMessage(final String Message, Boolean highlight) {
 
         final Animation MessageFlipStart = AnimationUtils.loadAnimation(getApplicationContext(),
@@ -443,6 +435,56 @@ public class Game extends AppCompatActivity {
         MainDisplay.startAnimation(Focus);
     }
 
+    public void displayMessageWithImage(final String Message, final Bitmap tempDrawable) {
+        final Animation ContainerFlipStart = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.flip_start);
+        final Animation ContainerFlipEnd = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.flip_end);
+
+        ContainerFlipStart.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                AnimalImageView.setImageBitmap(tempDrawable);
+                ScoreDisplay.setText(Message);
+                ScoreDisplay.setTextSize(40);
+                FlipContainer.startAnimation(ContainerFlipEnd);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+
+        FlipContainer.startAnimation(ContainerFlipStart);
+
+        messageHandler.removeCallbacksAndMessages(null);
+        messageHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ContainerFlipStart.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        AnimalImageView.setImageBitmap(dr);
+                        ScoreDisplay.setTextSize(80);
+                        ScoreDisplay.setText(String.valueOf(score));
+                        ScoreDisplay.startAnimation(ContainerFlipEnd);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                });
+
+                FlipContainer.startAnimation(ContainerFlipStart);
+                messageHandler.removeCallbacks(this);
+            }
+        }, 2000);
+    }
+
     public void animateNewText() {
         String text = InputTextEdit.getText().toString().trim();
         String firstPart = text.substring(0, text.length()-1), secondPart = text.substring(text.length()-1, text.length());
@@ -484,8 +526,6 @@ public class Game extends AppCompatActivity {
         GameOverIntent.putExtra("NewEggCount", NewEggCount);
         GameOverIntent.putExtra("newlyDiscoveredAnimals", TextUtils.join("-", NewlyDiscoveredAnimals));
         startActivity(GameOverIntent);
-
-        //overridePendingTransition(R.anim.pull_in_right, R.anim.pull_out_left);
     }
 
     public void StartIntroAnimation() {
@@ -511,5 +551,100 @@ public class Game extends AppCompatActivity {
         paint.setColorFilter(f);
         c.drawBitmap(bmpOriginal, 0, 0, paint);
         return bmpGrayscale;
+    }
+
+    public void help(View view) {
+        Animation Shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+        HelpButton.startAnimation(Shake);
+
+        final Activity context = Game.this;
+
+        // Inflate the popup_layout.xml
+        LinearLayout viewGroup = (LinearLayout) context.findViewById(R.id.research_popup_layout);
+        LayoutInflater layoutInflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = layoutInflater.inflate(R.layout.research_popup_layout, viewGroup);
+
+        // Creating the PopupWindow
+        popup = new PopupWindow(context);
+        popup.setContentView(layout);
+        popup.setWidth(getWindowManager().getDefaultDisplay().getWidth()-100);
+        popup.setHeight(600);
+        popup.setFocusable(true);
+
+        // Displaying the popup at the specified location
+        popup.showAtLocation(layout, Gravity.NO_GRAVITY, 50, 350);
+
+    }
+
+    public void GetHint(View view) {
+        System.out.println("You have recieved a hint...");
+        popup.dismiss();
+
+        String suggestedAnimal = FindAnimal(Character.toString(lastLetter).toUpperCase());
+
+
+        if (suggestedAnimal != null) {
+
+            Bitmap drSuggested = BitmapFactory.decodeResource(getResources(),
+                    getResources().getIdentifier(suggestedAnimal.toLowerCase() + "imagesmall", "drawable",
+                            getPackageName()));
+
+            if (!PreviouslyDiscoveredAnimals.contains(suggestedAnimal)) {
+                drSuggested = toGrayscale(drSuggested, 0);
+            }
+
+            displayMessageWithImage("This animal would work!", drSuggested);
+        } else {
+            displayMessage("No animals start with a "+Character.toString(lastLetter).toUpperCase()+"?!", false);
+        }
+    }
+
+    public void GetMoreTime(View view) {
+        System.out.println("You have recieved more time...");
+        popup.dismiss();
+
+        animationGrow.updateAngle();
+        arcView.startAnimation(animationGrow);
+    }
+
+    public void Skip(View view) {
+        System.out.println("You have skipped an animal...");
+        popup.dismiss();
+
+        String suggestedAnimal = FindAnimal(Character.toString(lastLetter).toUpperCase());
+
+        if (suggestedAnimal != null) {
+            displayMessage("What about a "+suggestedAnimal+"?", true);
+        } else {
+            displayMessage("No animals start with a "+Character.toString(lastLetter).toUpperCase()+"?!", false);
+        }
+    }
+
+    public String FindAnimal(String FirstLetter) {
+        ArrayList<String> FilteredAnimals = new ArrayList<>();
+
+        boolean firstFound = false, lastFound = false;
+
+        for (int i=0; i<Globals.Animals.size(); i++) {
+            if (!firstFound && !lastFound) {
+                if (Globals.Animals.get(i).startsWith(FirstLetter) && !InputAnimalList.contains(Globals.Animals.get(i))) {
+                    FilteredAnimals.add(0, Globals.Animals.get(i));
+                    firstFound = true;
+                }
+            } else if (firstFound && !lastFound) {
+                if (Globals.Animals.get(i).startsWith(FirstLetter) && !InputAnimalList.contains(Globals.Animals.get(i))) {
+                    FilteredAnimals.add(0, Globals.Animals.get(i));
+                } else {
+                    lastFound = true;
+                }
+            }
+        }
+
+        if (FilteredAnimals.size() != 0) {
+            return FilteredAnimals.get(RandomGenerator.nextInt(FilteredAnimals.size()));
+        } else {
+            return null;
+        }
     }
 }
