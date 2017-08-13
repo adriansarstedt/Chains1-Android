@@ -6,12 +6,14 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -51,16 +53,18 @@ public class HomePage extends AppCompatActivity {
         int EggCount = PreferenceManager.getDefaultSharedPreferences(this).getInt("EggCount", 0);
         EggCountDisplay.setText(String.valueOf(EggCount));
 
-        /*
         final Handler animationStartHandler = new Handler();
         animationStartHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                SetupPlayButtonAnimation();
+                Animation InfiniteGrowShrink = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.infinite_grow_shrink);
+                PlayButton.startAnimation(InfiniteGrowShrink);
+                //SetupPlayButtonAnimation();
+                //StartAnimations();
                 animationStartHandler.removeCallbacks(this);
             }
         }, 500);
-        */
+
     }
 
     public void StartAnimations() {
@@ -178,5 +182,14 @@ public class HomePage extends AppCompatActivity {
         Intent ResearchCenterIntent = new Intent(this, ResearchCenter.class);
         startActivity(ResearchCenterIntent);
         overridePendingTransition(R.anim.pull_in_left, R.anim.pull_out_right);
+    }
+
+    public void HelpButtonPressed(View view) {
+        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.button_click);
+        mp.start();
+
+        Intent ResearchCenterIntent = new Intent(this, HelpPopup.class);
+        startActivity(ResearchCenterIntent);
+        overridePendingTransition(0, 0);
     }
 }

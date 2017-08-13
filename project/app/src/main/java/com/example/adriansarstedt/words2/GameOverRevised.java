@@ -1,41 +1,40 @@
 package com.example.adriansarstedt.words2;
 
-import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-public class GameOverRevised extends AppCompatActivity {
+public class GameOverRevised extends Activity {
 
-    TextView WellDoneTitle, PressToReplayTitle, ScoreLabel, HighScoreLabel, EggLabel;
+    TextView WellDoneTitle, PressToReplayTitle, ScoreLabel, HighScoreLabel, EggLabel, EggSlogan, ScoreSlogan, DiscoverySlogan, HighscoreSlogan;
     Handler FocusHandler = new Handler();
     Animation Focus;
     ViewAnimator AchievementViewAnimator;
     ArrayList<String> NewlyDiscoveredAnimalsList;
     GridView AnimalDisplayRow1, AnimalDisplayRow2;
     CustomGridAdapter AnimalAdapterRow1, AnimalAdapterRow2;
+    Animation FlipStart, FlipEnd;
 
     boolean adjusted1 = false, adjusted2 = false;
 
@@ -48,6 +47,9 @@ public class GameOverRevised extends AppCompatActivity {
             Window window = getWindow();
             window.setStatusBarColor(Color.parseColor("#CC0033"));
         }
+
+        ColorDrawable Background = new ColorDrawable(Color.parseColor("#ccFF0033"));
+        findViewById(R.id.activity_entry_info).setBackground(Background);
 
         int Score = getIntent().getIntExtra("score", 0);
         int NewEggCount = getIntent().getIntExtra("NewEggCount", 0);
@@ -71,11 +73,35 @@ public class GameOverRevised extends AppCompatActivity {
             HighScoreEditor.apply();
         }
 
+        FlipStart = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.flip_start);
+        FlipEnd = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.flip_end);
+
+        FlipStart.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                EggSlogan.startAnimation(FlipEnd);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+
         WellDoneTitle = (TextView)findViewById(R.id.WellDoneTitle);
         ScoreLabel = (TextView)findViewById(R.id.ScoreLabel);
         HighScoreLabel = (TextView)findViewById(R.id.HighScoreLabel);
         EggLabel = (TextView) findViewById(R.id.EggLabel);
         PressToReplayTitle = (TextView)findViewById(R.id.PressToRetryTitle);
+
+        EggSlogan = (TextView) findViewById(R.id.EggSlogan);
+        //HighscoreSlogan = (TextView) findViewById(R.id.EggSlogan);
+        //DiscoverySlogan = (TextView) findViewById(R.id.EggSlogan);
+        //ScoreSlogan = (TextView) findViewById(R.id.EggSlogan);
+
         AchievementViewAnimator = (ViewAnimator) findViewById(R.id.AchievementViewAnimator);
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Lato-Thin.ttf");
@@ -84,6 +110,8 @@ public class GameOverRevised extends AppCompatActivity {
         ScoreLabel.setTypeface(custom_font);
         HighScoreLabel.setTypeface(custom_font);
         EggLabel.setTypeface(custom_font);
+
+        EggSlogan.setTypeface(custom_font);
 
         ScoreLabel.setText(String.valueOf(Score));
         HighScoreLabel.setText(String.valueOf(HighScore));
@@ -102,6 +130,7 @@ public class GameOverRevised extends AppCompatActivity {
             @Override
             public void run() {
                 PressToReplayTitle.startAnimation(Focus);
+                EggSlogan.startAnimation(FlipStart);
                 AchievementViewAnimator.showPrevious();
 
                 FocusHandler.postDelayed(this, 2000);
@@ -175,6 +204,27 @@ public class GameOverRevised extends AppCompatActivity {
             }
         });
 
+        //Animation InfiniteGrowShrink = AnimationUtils.loadAnimation(this,android.R.anim.slide_in_left);
+
+        /*final ScaleAnimation startGrowAnim = new ScaleAnimation(0f, 1f, 0f, 1f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        startGrowAnim.setDuration(1000);
+        startGrowAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Animation InfiniteGrowShrink = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.infinite_grow_shrink);
+                WellDoneTitle.startAnimation(InfiniteGrowShrink);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+        WellDoneTitle.startAnimation(startGrowAnim);*/
+
     }
 
     public void ReturnHome(View view) {
@@ -183,6 +233,7 @@ public class GameOverRevised extends AppCompatActivity {
 
         Intent ReturnHomeIntent = new Intent(this, HomePage.class);
         startActivity(ReturnHomeIntent);
+        overridePendingTransition(R.anim.pull_in_left, R.anim.pull_out_right);
     }
 
     public void NewGame(View view) {
@@ -191,6 +242,7 @@ public class GameOverRevised extends AppCompatActivity {
 
         Intent NewGameIntent = new Intent(this, Game.class);
         startActivity(NewGameIntent);
+
     }
 
 }

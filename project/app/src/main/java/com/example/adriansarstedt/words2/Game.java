@@ -14,40 +14,33 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.concurrent.RunnableFuture;
 
 public class Game extends AppCompatActivity {
 
@@ -472,7 +465,7 @@ public class Game extends AppCompatActivity {
                         AnimalImageView.setImageBitmap(dr);
                         ScoreDisplay.setTextSize(80);
                         ScoreDisplay.setText(String.valueOf(score));
-                        ScoreDisplay.startAnimation(ContainerFlipEnd);
+                        FlipContainer.startAnimation(ContainerFlipEnd);
                     }
 
                     @Override
@@ -571,6 +564,18 @@ public class Game extends AppCompatActivity {
         popup.setWidth(getWindowManager().getDefaultDisplay().getWidth()-100);
         popup.setHeight(600);
         popup.setFocusable(true);
+
+        popup.setBackgroundDrawable(new BitmapDrawable());
+
+        Button ItemTitle1 = (Button) layout.findViewById(R.id.ItemTitle1);
+        Button ItemTitle2 = (Button) layout.findViewById(R.id.ItemTitle2);
+        Button ItemTitle3 = (Button) layout.findViewById(R.id.ItemTitle3);
+
+        Typeface custom_font_hairline = Typeface.createFromAsset(getAssets(), "fonts/Lato-Thin.ttf");
+
+        ItemTitle1.setTypeface(custom_font_hairline);
+        ItemTitle2.setTypeface(custom_font_hairline);
+        ItemTitle3.setTypeface(custom_font_hairline);
 
         // Displaying the popup at the specified location
         popup.showAtLocation(layout, Gravity.NO_GRAVITY, 50, 350);

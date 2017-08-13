@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@drawable/progressbar_outer"
     android:id="@+id/research_popup_layout">
 
     <!-- rp stands for research popup -->
@@ -16,12 +17,16 @@
 
         <Button
             android:id="@+id/ItemTitle1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
+            android:textSize="20sp"
             android:text="Get Hint"
+            android:gravity="center_vertical|start"
+            android:background="@android:color/transparent"
+            android:layout_marginLeft="20dp"
             android:onClick="GetHint"/>
 
         <ImageView
@@ -32,13 +37,14 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:src="@drawable/egg2"/>
 
         <TextView
             android:id="@+id/ItemEggCount1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:layout_toLeftOf="@id/ItemEggImage1"
             android:layout_centerVertical="true"
             android:text="4" />
@@ -46,6 +52,12 @@
 
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/progressbar_outer"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"/>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -55,13 +67,17 @@
 
         <Button
             android:id="@+id/ItemTitle2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
+            android:textSize="20sp"
             android:text="Get More Time"
-            android:onClick="GetMoreTime"/>
+            android:gravity="start|center_vertical"
+            android:onClick="GetMoreTime"
+            android:paddingLeft="20dp"
+            android:background="@android:color/transparent"/>
 
         <ImageView
             android:id="@+id/ItemEggImage2"
@@ -71,20 +87,26 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:src="@drawable/egg2"/>
 
         <TextView
             android:id="@+id/ItemEggCount2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:layout_toLeftOf="@id/ItemEggImage2"
             android:layout_centerVertical="true"
             android:text="6" />
 
-
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/progressbar_outer"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"/>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -94,12 +116,16 @@
 
         <Button
             android:id="@+id/ItemTitle3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:text="Skip"
+            android:textSize="20sp"
+            android:paddingLeft="20dp"
+            android:gravity="center_vertical|start"
+            android:text="Skip This Animal"
+            android:background="@android:color/transparent"
             android:onClick="Skip"/>
 
         <ImageView
@@ -110,14 +136,16 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:src="@drawable/egg2"/>
 
         <TextView
             android:id="@+id/ItemEggCount3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:layout_toLeftOf="@id/ItemEggImage3"
+            android:layout_toStartOf="@id/ItemEggImage3"
             android:layout_centerVertical="true"
             android:textAlignment="center"
             android:text="20" />
