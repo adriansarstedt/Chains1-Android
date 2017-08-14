@@ -7,11 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class FirstHelpFragment extends Fragment {
+public class HelpFragment1 extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.first_help_frag, container, false);
+        View v = inflater.inflate(R.layout.help_frag_1, container, false);
 
         TextView tv = (TextView) v.findViewById(R.id.tvFirst);
         tv.setText(getArguments().getString("msg"));
@@ -19,9 +19,9 @@ public class FirstHelpFragment extends Fragment {
         return v;
     }
 
-    public static FirstHelpFragment newInstance(String text) {
+    public static HelpFragment1 newInstance(String text) {
 
-        FirstHelpFragment f = new FirstHelpFragment();
+        HelpFragment1 f = new HelpFragment1();
         Bundle b = new Bundle();
         b.putString("msg", text);
 

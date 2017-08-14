@@ -54,7 +54,7 @@ public class Game extends AppCompatActivity {
     View MainDisplay, FlipContainer;
 
     Character lastLetter, inputLetter;
-    int score = 0, viewWidth = 2000, HighScore, turnTime, NewEggCount = 0;
+    int score = 0, viewWidth = 2000, HighScore, turnTime, NewEggCount = 0, EggCount;
     Random RandomGenerator;
     boolean run = true, Sound, PreviouslyDiscovered;
 
@@ -107,6 +107,7 @@ public class Game extends AppCompatActivity {
         String DiscoveredAnimalsStorage = PreferenceManager.getDefaultSharedPreferences(this).getString("DiscoveredAnimals", "researchcenter");
         PreviouslyDiscoveredAnimals = new ArrayList<String>(Arrays.asList(DiscoveredAnimalsStorage.split("-")));
         NewlyDiscoveredAnimals = new ArrayList<String>();
+        EggCount = PreferenceManager.getDefaultSharedPreferences(this).getInt("EggCount", 0);
 
         if (Difficulty.equals("Fast")) {
             turnTime = 10000;
@@ -247,6 +248,7 @@ public class Game extends AppCompatActivity {
 
                 if (random<=10) {
                     NewEggCount += 1;
+                    EggCount += 1;
                     animateIcon();
                 }
             }
@@ -583,46 +585,70 @@ public class Game extends AppCompatActivity {
     }
 
     public void GetHint(View view) {
-        System.out.println("You have recieved a hint...");
-        popup.dismiss();
 
-        String suggestedAnimal = FindAnimal(Character.toString(lastLetter).toUpperCase());
+        if (EggCount>=4) {
+            popup.dismiss();
+
+            EggCount -= 4;
+            NewEggCount -= 4;
+            animateIcon();
+
+            String suggestedAnimal = FindAnimal(Character.toString(lastLetter).toUpperCase());
 
 
-        if (suggestedAnimal != null) {
+            if (suggestedAnimal != null) {
 
-            Bitmap drSuggested = BitmapFactory.decodeResource(getResources(),
-                    getResources().getIdentifier(suggestedAnimal.toLowerCase() + "imagesmall", "drawable",
-                            getPackageName()));
+                Bitmap drSuggested = BitmapFactory.decodeResource(getResources(),
+                        getResources().getIdentifier(suggestedAnimal.toLowerCase() + "imagesmall", "drawable",
+                                getPackageName()));
 
-            if (!PreviouslyDiscoveredAnimals.contains(suggestedAnimal)) {
-                drSuggested = toGrayscale(drSuggested, 0);
+                if (!PreviouslyDiscoveredAnimals.contains(suggestedAnimal)) {
+                    drSuggested = toGrayscale(drSuggested, 0);
+                }
+
+                displayMessageWithImage("This animal would work!", drSuggested);
+            } else {
+                displayMessage("No animals start with a " + Character.toString(lastLetter).toUpperCase() + "?!", false);
             }
-
-            displayMessageWithImage("This animal would work!", drSuggested);
         } else {
-            displayMessage("No animals start with a "+Character.toString(lastLetter).toUpperCase()+"?!", false);
+            System.out.println("Sorry you dont have enough eggs to get a hint");
         }
     }
 
     public void GetMoreTime(View view) {
-        System.out.println("You have recieved more time...");
-        popup.dismiss();
 
-        animationGrow.updateAngle();
-        arcView.startAnimation(animationGrow);
+        if (EggCount>=6) {
+            popup.dismiss();
+
+            EggCount -= 6;
+            NewEggCount -= 6;
+            animateIcon();
+
+            animationGrow.updateAngle();
+            arcView.startAnimation(animationGrow);
+        } else {
+            System.out.println("Sorry you dont have enough eggs to get more time");
+        }
     }
 
     public void Skip(View view) {
-        System.out.println("You have skipped an animal...");
-        popup.dismiss();
 
-        String suggestedAnimal = FindAnimal(Character.toString(lastLetter).toUpperCase());
+        if (EggCount>=20) {
+            popup.dismiss();
 
-        if (suggestedAnimal != null) {
-            displayMessage("What about a "+suggestedAnimal+"?", true);
+            EggCount -= 20;
+            NewEggCount -= 20;
+            animateIcon();
+
+            String suggestedAnimal = FindAnimal(Character.toString(lastLetter).toUpperCase());
+
+            if (suggestedAnimal != null) {
+                displayMessage("What about a " + suggestedAnimal + "?", true);
+            } else {
+                displayMessage("No animals start with a " + Character.toString(lastLetter).toUpperCase() + "?!", false);
+            }
         } else {
-            displayMessage("No animals start with a "+Character.toString(lastLetter).toUpperCase()+"?!", false);
+            System.out.println("Sorry you dont have enough eggs to skip");
         }
     }
 
