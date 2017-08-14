@@ -37,10 +37,10 @@ public class HelpPopup extends FragmentActivity {
         public Fragment getItem(int pos) {
             switch(pos) {
 
-                case 0: return HelpFragment1.newInstance("FirstFragment, Instance 1");
+                case 0: return HelpFragment1.newInstance("a", "b", "c", "d");
                 case 1: return HelpFragment2.newInstance("SecondFragment, Instance 1");
                 case 2: return HelpFragment2.newInstance("SecondFragment, Instance 2");
-                default: return HelpFragment1.newInstance("FirstFragment, Default");
+                default: return HelpFragment1.newInstance("a", "b", "c", "d");
             }
         }
 
