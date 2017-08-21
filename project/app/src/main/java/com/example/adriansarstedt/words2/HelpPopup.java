@@ -13,6 +13,8 @@ import android.view.Window;
 
 public class HelpPopup extends FragmentActivity {
 
+    MyPagerAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,8 +25,10 @@ public class HelpPopup extends FragmentActivity {
             window.setStatusBarColor(Color.parseColor("#CC0033"));
         }
 
+        adapter = new MyPagerAdapter(getSupportFragmentManager());
+
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        pager.setAdapter(adapter);
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
@@ -35,13 +39,17 @@ public class HelpPopup extends FragmentActivity {
 
         @Override
         public Fragment getItem(int pos) {
-            switch(pos) {
 
-                case 0: return HelpFragment1.newInstance("a", "b", "c", "d");
-                case 1: return HelpFragment2.newInstance("SecondFragment, Instance 1");
-                case 2: return HelpFragment2.newInstance("SecondFragment, Instance 2");
+            switch(pos) {
+                case 0: return HelpFragment1.newInstance("EVERY GAME STARTS WITH ONE LETTER", "", "E", "YOU NEED TO THINK OF AN ANIMAL THAT STARTS WITH THAT LETTER");
+                case 1: return HelpFragment2.newInstance("LET'S SAY YOU CHOOSE ECHIDNA", "E", "CHIDNA", "THE WORD CHAIN CONTINUES! NOW YOU NEED TO THINK OF AN ANIMAL STARTING WITH A");
+                case 2: return HelpFragment3.newInstance("Help Frag 3", "A", "", "ox");
                 default: return HelpFragment1.newInstance("a", "b", "c", "d");
             }
+        }
+
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
 
         @Override

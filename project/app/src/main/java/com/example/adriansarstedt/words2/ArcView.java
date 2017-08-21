@@ -1,6 +1,7 @@
 package com.example.adriansarstedt.words2;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,7 +12,7 @@ import android.view.View;
 public class ArcView extends View {
 
     private final Paint mPaint;
-    private final RectF mRect;
+    private RectF mRect;
     private float arcAngle;
 
     public ArcView(Context context, AttributeSet attrs) {
@@ -25,13 +26,28 @@ public class ArcView extends View {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(45);
         mPaint.setColor(Color.WHITE);
-        mRect = new RectF(25, 25, 675, 675);
+
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int widthPixels = View.MeasureSpec.getSize( widthMeasureSpec );
+        int heightPixels = View.MeasureSpec.getSize( widthMeasureSpec );
+        setCanvasRect(widthPixels, heightPixels);
+
+        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawArc(mRect, 270, arcAngle, false, mPaint);
+        if (mRect != null) {
+            canvas.drawArc(mRect, 270, arcAngle, false, mPaint);
+        }
+    }
+
+    public void setCanvasRect(int width, int height) {
+        mRect = new RectF(25, 25, width-25, height-25);
     }
 
     public float getArcAngle() {
