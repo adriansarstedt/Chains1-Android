@@ -9,6 +9,7 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -16,12 +17,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class GameTextDisplay extends LinearLayout {
 
     private TextView tv1, tv2;
     View c;
+    ArrayList<Handler> HandlerArray = new ArrayList<Handler>();
 
     public GameTextDisplay(Context context) {
         super(context);
@@ -61,7 +64,7 @@ public class GameTextDisplay extends LinearLayout {
         super.onFinishInflate();
     }
 
-    public void animateIn(final String leftPortion, final String rightPortion, int timeDelay, final ArcView arcView) {
+    public void animateIn(final String leftPortion, final String rightPortion, int timeDelay, final ArcView arcView, final boolean isMessage) {
 
         final Handler animationStartHandler = new Handler();
         animationStartHandler.postDelayed(new Runnable() {
@@ -89,13 +92,21 @@ public class GameTextDisplay extends LinearLayout {
                     }
                 });
 
-                ArcGrowAnimation arcGrow = new ArcGrowAnimation(arcView);
-                arcGrow.setDuration(1000);
-                arcView.startAnimation(arcGrow);
+                if (arcView != null && !isMessage) {
+                    ArcGrowAnimation arcGrow = new ArcGrowAnimation(arcView);
+                    arcGrow.setDuration(1000);
+                    arcView.startAnimation(arcGrow);
+
+                }
+
+                if (isMessage) {
+                    activateSmallText();
+                }
 
                 animationStartHandler.removeCallbacks(this);
             }
         }, timeDelay);
+        HandlerArray.add(animationStartHandler);
     }
 
     public void animateOut(final String leftPortion, final String rightPortion, int timeDelay, final ArcView arcView) {
@@ -126,13 +137,32 @@ public class GameTextDisplay extends LinearLayout {
                 }
                 });
 
-                ArcShrinkAnimation arcShrink = new ArcShrinkAnimation(arcView, 360);
-                arcShrink.setDuration(5000);
-                arcView.startAnimation(arcShrink);
+                if (arcView != null) {
+                    ArcShrinkAnimation arcShrink = new ArcShrinkAnimation(arcView);
+                    arcShrink.setDuration(10000);
+                    arcView.startAnimation(arcShrink);
+                }
 
                 animationStartHandler.removeCallbacks(this);
             }
         }, timeDelay);
+        HandlerArray.add(animationStartHandler);
+    }
+
+    public void resetView() {
+        tv1.setText("");
+        tv2.setText("");
+        tv1.setTranslationX(3000);
+        tv2.setTranslationX(3000);
+        tv2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
+
+        for (int x=0; x<HandlerArray.size(); x++) {
+            HandlerArray.get(x).removeCallbacksAndMessages(null);
+        }
+    }
+
+    public void activateSmallText() {
+        tv2.setTextSize(20);
     }
 
     public void setTextA( String str ) {

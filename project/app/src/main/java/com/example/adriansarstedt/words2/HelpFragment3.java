@@ -14,18 +14,27 @@ public class HelpFragment3 extends Fragment {
     TextView e1;
     ArcView av;
     GameTextDisplay gt;
-    Button tb;
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            ArcShrinkAnimation asa = new ArcShrinkAnimation(av, 360);
-            asa.setDuration(5000);
-            av.startAnimation(asa);
+        if (gt != null) {
+            if (isVisibleToUser) {
+                ArcShrinkAnimation asa = new ArcShrinkAnimation(av);
+                asa.setDuration(10000);
+                av.startAnimation(asa);
 
-            gt.animateIn("A", "NT", 3000, av);
-            gt.animateOut("AN", "T", 4000, av);
+                gt.animateIn("", "A", 200, null, false);
+                gt.animateIn("A", "NT", 5000, av, false);
+                gt.animateOut("AN", "T", 6000, av);
+                gt.animateOut("T", "", 10000, null);
+                gt.animateIn("", "OTHEWISE YOU LOSE", 11000, null, true);
+            } else {
+                gt.resetView();
+                gt.setTextB("A");
+                av.clearAnimation();
+
+            }
         }
     }
 
@@ -36,7 +45,6 @@ public class HelpFragment3 extends Fragment {
         e1 = (TextView) v.findViewById(R.id.e1f3);
         av = (ArcView) v.findViewById(R.id.arc_view);
         gt = (GameTextDisplay) v.findViewById(R.id.game_text_display);
-        tb = (Button) v.findViewById(R.id.testButton);
 
         Typeface custom_font_hairline = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Lato-Thin.ttf");
 
@@ -46,18 +54,10 @@ public class HelpFragment3 extends Fragment {
         gt.setTextA(getArguments().getString("t2"));
         gt.setTextB(getArguments().getString("t3"));
 
-
-        tb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ButtonPress();
-            }
-        });
-
         return v;
     }
 
-    public static HelpFragment3 newInstance(String t1, String t2, String t3, String t4) {
+    public static HelpFragment3 newInstance(String t1, String t2, String t3) {
 
         HelpFragment3 f = new HelpFragment3();
 
@@ -65,14 +65,9 @@ public class HelpFragment3 extends Fragment {
         b.putString("t1", t1);
         b.putString("t2", t2);
         b.putString("t3", t3);
-        b.putString("t4", t4);
 
         f.setArguments(b);
 
         return f;
-    }
-
-    public void ButtonPress() {
-        gt.animateOut("A", "T", 2000, av);
     }
 }

@@ -12,24 +12,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:paddingTop="40dp" />
+        android:paddingTop="40dp"
+        android:textColor="#ffffff"/>
 
     <com.example.adriansarstedt.words2.ArcView
         android:id="@+id/arc_view"
-        android:layout_width="500px"
-        android:layout_height="500px" />
+        android:layout_width="600px"
+        android:layout_height="600px"
+        android:layout_marginTop="15dp"/>
 
     <com.example.adriansarstedt.words2.GameTextDisplay
         android:id="@+id/game_text_display"
         android:layout_width="2000px"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"/>
-    <Button
-        android:id="@+id/testButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="tester" />
+        android:layout_marginBottom="20dp" />
 </LinearLayout>

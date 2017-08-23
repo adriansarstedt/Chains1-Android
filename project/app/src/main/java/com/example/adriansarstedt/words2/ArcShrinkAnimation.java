@@ -8,11 +8,10 @@ public class ArcShrinkAnimation extends Animation {
     private ArcView arcView;
 
     private float oldAngle;
-    private float newAngle;
 
-    public ArcShrinkAnimation(ArcView arcView, int newAngle) {
+    public ArcShrinkAnimation(ArcView arcView) {
+        arcView.setArcAngle(-360);
         this.oldAngle = arcView.getArcAngle();
-        this.newAngle = newAngle;
         this.arcView = arcView;
     }
 

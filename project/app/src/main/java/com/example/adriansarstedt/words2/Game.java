@@ -87,8 +87,8 @@ public class Game extends AppCompatActivity {
         HelpButton = (ImageButton) findViewById(R.id.help_button);
         ScoreDisplay = (TextView) findViewById(R.id.ScoreDisplayView);
         HighScoreDisplay = (TextView) findViewById(R.id.highscore_display);
-        MainDisplay = (View) findViewById(R.id.MainDisplay);
-        FlipContainer = (View) findViewById(R.id.FlipContainer);
+        MainDisplay = findViewById(R.id.MainDisplay);
+        FlipContainer = findViewById(R.id.FlipContainer);
 
         InputTextEdit = (EditText) findViewById(R.id.InputTextEdit);
         InputText1 = (TextView) findViewById(R.id.InputText1);
@@ -105,8 +105,8 @@ public class Game extends AppCompatActivity {
         String Difficulty = PreferenceManager.getDefaultSharedPreferences(this).getString("Difficulty", "Slow");
         String SoundText = PreferenceManager.getDefaultSharedPreferences(this).getString("Sound", "On");
         String DiscoveredAnimalsStorage = PreferenceManager.getDefaultSharedPreferences(this).getString("DiscoveredAnimals", "researchcenter");
-        PreviouslyDiscoveredAnimals = new ArrayList<String>(Arrays.asList(DiscoveredAnimalsStorage.split("-")));
-        NewlyDiscoveredAnimals = new ArrayList<String>();
+        PreviouslyDiscoveredAnimals = new ArrayList<>(Arrays.asList(DiscoveredAnimalsStorage.split("-")));
+        NewlyDiscoveredAnimals = new ArrayList<>();
         EggCount = PreferenceManager.getDefaultSharedPreferences(this).getInt("EggCount", 0);
 
         if (Difficulty.equals("Fast")) {
@@ -163,7 +163,7 @@ public class Game extends AppCompatActivity {
     }
 
     public void setupAnimations() {
-        animationShrink = new ArcShrinkAnimation(arcView, 360);
+        animationShrink = new ArcShrinkAnimation(arcView);
         animationShrink.setDuration(turnTime);
         arcView.startAnimation(animationShrink);
 
@@ -207,7 +207,7 @@ public class Game extends AppCompatActivity {
         animationGrow = new ArcGrowAnimation(arcView);
         animationGrow.setDuration(1000);
 
-        arcDiscoveryAnimation = new ArcShrinkAnimation(arcView, 360);
+        arcDiscoveryAnimation = new ArcShrinkAnimation(arcView);
         arcDiscoveryAnimation.setDuration(1000);
 
         arcDiscoveryAnimation.setAnimationListener(new Animation.AnimationListener()

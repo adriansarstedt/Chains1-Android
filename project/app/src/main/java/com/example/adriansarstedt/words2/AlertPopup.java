@@ -29,7 +29,7 @@ public class AlertPopup extends Activity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
-            window.setStatusBarColor(Color.parseColor("#CC0033"));
+            window.setStatusBarColor(Color.parseColor("#FF0033"));
         }
 
         Background = new ColorDrawable(Color.parseColor("#55FF0033"));
