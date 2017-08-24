@@ -44,6 +44,7 @@ public class HelpPopup extends FragmentActivity {
                 case 0: return HelpFragment1.newInstance("EVERY GAME STARTS WITH ONE LETTER", "", "E", "YOU NEED TO THINK OF AN ANIMAL THAT STARTS WITH THAT LETTER");
                 case 1: return HelpFragment2.newInstance("LET'S SAY YOU CHOOSE ECHIDNA", "E", "CHIDNA", "THE WORD CHAIN CONTINUES! NOW YOU NEED TO THINK OF AN ANIMAL STARTING WITH A");
                 case 2: return HelpFragment3.newInstance("WATCH THE DIAL TO MAKE SURE YOUR TIME DOESN'T RUN OUT", "A", "");
+                case 3: return HelpFragment4.newInstance("WATCH THE DIAL TO MAKE SURE YOUR TIME DOESN'T RUN OUT", "A", "");
                 default: return HelpFragment1.newInstance("a", "b", "c", "d");
             }
         }
@@ -54,7 +55,7 @@ public class HelpPopup extends FragmentActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
     }
 

@@ -1,6 +1,14 @@
 package com.example.adriansarstedt.words2;
 
 import android.app.Application;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +47,10 @@ public class Globals extends Application {
 
     public static String User = "adriansarstedt", Difficulty = "Fast";
 
+    public static float dipToPixels(Context context, int dipValue) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics);
+    }
 
     public static double similarity(String s1, String s2) {
         String longer = s1, shorter = s2;
@@ -48,6 +60,22 @@ public class Globals extends Application {
         int longerLength = longer.length();
         if (longerLength == 0) { return 1.0; /* both strings are zero length */ }
         return (longerLength - editDistance(longer, shorter)) / (double) longerLength;
+    }
+
+    public static Bitmap toGrayscale(Bitmap bmpOriginal, float sat) {
+        int width, height;
+        height = bmpOriginal.getHeight();
+        width = bmpOriginal.getWidth();
+
+        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(bmpGrayscale);
+        Paint paint = new Paint();
+        ColorMatrix cm = new ColorMatrix();
+        cm.setSaturation(sat);
+        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+        paint.setColorFilter(f);
+        c.drawBitmap(bmpOriginal, 0, 0, paint);
+        return bmpGrayscale;
     }
 
     public static int editDistance(String s1, String s2) {

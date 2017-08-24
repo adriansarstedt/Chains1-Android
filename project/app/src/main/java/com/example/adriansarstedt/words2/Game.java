@@ -22,6 +22,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -580,7 +581,7 @@ public class Game extends AppCompatActivity {
         ItemTitle3.setTypeface(custom_font_hairline);
 
         // Displaying the popup at the specified location
-        popup.showAtLocation(layout, Gravity.NO_GRAVITY, 50, 350);
+        popup.showAtLocation(layout, Gravity.NO_GRAVITY, 50, (int) Globals.dipToPixels(this, 80));
 
     }
 

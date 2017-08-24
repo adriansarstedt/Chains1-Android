@@ -9,41 +9,41 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class HelpFragment3 extends Fragment {
+public class HelpFragment4 extends Fragment {
 
     TextView e1;
-    ArcView av;
+    GameDial gd;
     GameTextDisplay gt;
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (gt != null) {
+        if (gd != null) {
             if (isVisibleToUser) {
-                ArcShrinkAnimation asa = new ArcShrinkAnimation(av);
-                asa.setDuration(10000);
-                av.startAnimation(asa);
+                gd.startTimer(new Runnable() {
+                    @Override
+                    public void run() {
 
-                gt.animateIn("", "A", 200, null, false);
-                gt.animateIn("A", "NT", 5000, av, false);
-                gt.animateOut("AN", "T", 6000, av);
-                gt.animateOut("T", "", 10000, null);
-                gt.animateIn("", "OTHERWISE YOU LOSE", 11000, null, true);
+                    }
+                });
+                System.out.println("////////////////////////////////");
+                System.out.println("triggered");
+                System.out.println("////////////////////////////////");
             } else {
-                gt.resetView();
-                gt.setTextB("A");
-                av.clearAnimation();
-
             }
+        } else {
+            System.out.println("////////////////////////////////");
+            System.out.println("not triggered");
+            System.out.println("////////////////////////////////");
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.help_frag_3, container, false);
+        View v = inflater.inflate(R.layout.help_frag_4, container, false);
 
         e1 = (TextView) v.findViewById(R.id.e1f3);
-        av = (ArcView) v.findViewById(R.id.arc_view);
+        gd = (GameDial) v.findViewById(R.id.game_dial);
         gt = (GameTextDisplay) v.findViewById(R.id.game_text_display);
 
         Typeface custom_font_hairline = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Lato-Thin.ttf");
@@ -57,9 +57,9 @@ public class HelpFragment3 extends Fragment {
         return v;
     }
 
-    public static HelpFragment3 newInstance(String t1, String t2, String t3) {
+    public static HelpFragment4 newInstance(String t1, String t2, String t3) {
 
-        HelpFragment3 f = new HelpFragment3();
+        HelpFragment4 f = new HelpFragment4();
 
         Bundle b = new Bundle();
         b.putString("t1", t1);
