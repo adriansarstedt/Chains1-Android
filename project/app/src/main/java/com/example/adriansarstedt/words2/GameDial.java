@@ -3,7 +3,9 @@ package com.example.adriansarstedt.words2;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -28,7 +30,7 @@ public class GameDial extends LinearLayout {
     ArcShrinkAnimation asa, ada;
     ArcGrowAnimation aga;
     ValueAnimator SaturationAnimator;
-    Animation messageFlipStart, messageFlipEnd, focus, shake;
+    Animation flipStart, flipEnd, imageFlipStart, focus, shake;
 
     Bitmap dr, drOriginal;
 
@@ -97,29 +99,23 @@ public class GameDial extends LinearLayout {
     }
 
     public void regenerate(int newScore, String newAnimal) {
+        drOriginal = BitmapFactory.decodeResource(getResources(),
+                getResources().getIdentifier(newAnimal + "imagesmall", "drawable",
+                        getContext().getPackageName()));
+
+        aga.updateAngle();
+        av.startAnimation(aga);
+        updateDisplay(String.valueOf(newScore), drOriginal, 80);
+
     }
 
     public void discovery(int newScore, String newAnimal) {
     }
 
-    public void displayMessage(final String message, EditText highlightText, Button helpButton, Bitmap tmpDr) {
+    public void displayMessage(final String message, EditText highlightText, Button helpButton, final Bitmap tmpDr) {
 
-        messageFlipStart.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                tv.setTextSize(40);
-                tv.setText(message);
-                tv.startAnimation(messageFlipEnd);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-        });
-
-        tv.startAnimation(messageFlipStart);
+        final String oldText = tv.getText().toString();
+        final Bitmap oldBitmap = ((BitmapDrawable)iv.getBackground()).getBitmap();
 
         if (highlightText != null) {
             highlightText.selectAll();
@@ -130,35 +126,53 @@ public class GameDial extends LinearLayout {
             helpButton.startAnimation(shake);
         }
 
+        updateDisplay(message, tmpDr, 40);
+
         messageHandler.removeCallbacksAndMessages(null);
         messageHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                messageFlipStart.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {}
 
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        tv.setTextSize(80);
-                        tv.setText(String.valueOf(4));
-                        tv.startAnimation(messageFlipEnd);
-                    }
+                if (tmpDr != null) {
+                    updateDisplay(oldText, oldBitmap, 80);
+                } else {
+                    updateDisplay(oldText, null, 80);
+                }
 
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {}
-                });
 
-                tv.startAnimation(messageFlipStart);
                 messageHandler.removeCallbacks(this);
             }
         }, 2000);
 
         md.startAnimation(focus);
+    }
 
-        if (tmpDr != null) {
-            //displayMessageWithImage
-        }
+    public void updateDisplay(final String newText, final Bitmap newImage, final int newTextSize) {
+        flipStart.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                if (newImage != null) {
+                    iv.startAnimation(imageFlipStart);
+                }
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                tv.setTextSize(newTextSize);
+                tv.setText(newText);
+                tv.startAnimation(flipEnd);
+
+                if (newImage != null) {
+                    iv.setImageBitmap(newImage);
+                    iv.startAnimation(flipEnd);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+
+        tv.startAnimation(flipStart);
     }
 
     public void setShrinkTime(int t) {
@@ -224,9 +238,11 @@ public class GameDial extends LinearLayout {
         });
 
         messageHandler = new Handler();
-        messageFlipStart = AnimationUtils.loadAnimation(getContext(),
+        imageFlipStart = AnimationUtils.loadAnimation(getContext(),
                 R.anim.flip_start);
-        messageFlipEnd = AnimationUtils.loadAnimation(getContext(),
+        flipStart = AnimationUtils.loadAnimation(getContext(),
+                R.anim.flip_start);
+        flipEnd = AnimationUtils.loadAnimation(getContext(),
                 R.anim.flip_end);
         focus = AnimationUtils.loadAnimation(getContext(),
                 R.anim.grow_shrink);

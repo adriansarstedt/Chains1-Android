@@ -3,9 +3,6 @@ package com.example.adriansarstedt.words2;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
-/**
- * Created by adriansarstedt on 25/12/2016.
- */
 
 public class ArcGrowAnimation extends Animation {
 

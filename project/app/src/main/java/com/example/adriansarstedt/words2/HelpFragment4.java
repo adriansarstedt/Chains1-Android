@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 public class HelpFragment4 extends Fragment {
@@ -23,7 +22,7 @@ public class HelpFragment4 extends Fragment {
                 gd.startTimer(new Runnable() {
                     @Override
                     public void run() {
-                        gd.displayMessage("Otherwise you lose!", null, null, null);
+                        gd.displayMessage("Hello", null, null, null);
                     }
                 });
             }
