@@ -24,7 +24,7 @@ public class ArcView extends View {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeWidth(45);
+        mPaint.setStrokeWidth(50);
         mPaint.setColor(Color.WHITE);
 
     }
@@ -47,7 +47,8 @@ public class ArcView extends View {
     }
 
     public void setCanvasRect(int width, int height) {
-        mRect = new RectF(25, 25, width-25, height-25);
+        int paddingOffset = 25+Math.round(Globals.dipToPixels(getContext(), 10));
+        mRect = new RectF(paddingOffset, paddingOffset, width-paddingOffset, height-paddingOffset);
     }
 
     public float getArcAngle() {

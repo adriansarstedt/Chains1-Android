@@ -23,18 +23,10 @@ public class HelpFragment4 extends Fragment {
                 gd.startTimer(new Runnable() {
                     @Override
                     public void run() {
-
+                        gd.displayMessage("Otherwise you lose!", null, null, null);
                     }
                 });
-                System.out.println("////////////////////////////////");
-                System.out.println("triggered");
-                System.out.println("////////////////////////////////");
-            } else {
             }
-        } else {
-            System.out.println("////////////////////////////////");
-            System.out.println("not triggered");
-            System.out.println("////////////////////////////////");
         }
     }
 

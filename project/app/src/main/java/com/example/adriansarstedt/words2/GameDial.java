@@ -4,19 +4,17 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
+import android.os.Handler;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import static com.example.adriansarstedt.words2.R.id.AnimalImageView;
 
 public class GameDial extends LinearLayout {
 
@@ -30,8 +28,11 @@ public class GameDial extends LinearLayout {
     ArcShrinkAnimation asa, ada;
     ArcGrowAnimation aga;
     ValueAnimator SaturationAnimator;
+    Animation messageFlipStart, messageFlipEnd, focus, shake;
 
     Bitmap dr, drOriginal;
+
+    Handler messageHandler;
 
 
     public GameDial(Context context) {
@@ -56,6 +57,7 @@ public class GameDial extends LinearLayout {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.game_dial, this);
     }
+
 
     @Override
     protected void onFinishInflate() {
@@ -100,7 +102,60 @@ public class GameDial extends LinearLayout {
     public void discovery(int newScore, String newAnimal) {
     }
 
-    public void displayMessage(String message, boolean focus, Bitmap tmpDr) {
+    public void displayMessage(final String message, EditText highlightText, Button helpButton, Bitmap tmpDr) {
+
+        messageFlipStart.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                tv.setTextSize(40);
+                tv.setText(message);
+                tv.startAnimation(messageFlipEnd);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+
+        tv.startAnimation(messageFlipStart);
+
+        if (highlightText != null) {
+            highlightText.selectAll();
+            highlightText.startAnimation(shake);
+        }
+
+        if (helpButton != null) {
+            helpButton.startAnimation(shake);
+        }
+
+        messageHandler.removeCallbacksAndMessages(null);
+        messageHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                messageFlipStart.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        tv.setTextSize(80);
+                        tv.setText(String.valueOf(4));
+                        tv.startAnimation(messageFlipEnd);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                });
+
+                tv.startAnimation(messageFlipStart);
+                messageHandler.removeCallbacks(this);
+            }
+        }, 2000);
+
+        md.startAnimation(focus);
+
         if (tmpDr != null) {
             //displayMessageWithImage
         }
@@ -167,5 +222,14 @@ public class GameDial extends LinearLayout {
                 av.startAnimation(aga);
             }
         });
+
+        messageHandler = new Handler();
+        messageFlipStart = AnimationUtils.loadAnimation(getContext(),
+                R.anim.flip_start);
+        messageFlipEnd = AnimationUtils.loadAnimation(getContext(),
+                R.anim.flip_end);
+        focus = AnimationUtils.loadAnimation(getContext(),
+                R.anim.grow_shrink);
+        shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
     }
 }
