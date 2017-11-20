@@ -45,28 +45,20 @@ import java.util.Random;
 
 public class Game extends AppCompatActivity {
 
-    ArcView arcView;
-    ArcShrinkAnimation animationShrink, arcDiscoveryAnimation;
-
     EditText InputTextEdit;
-    TextView InputText1, ScoreDisplay, HighScoreDisplay;
-    ImageView AnimalImageView;
+    TextView InputText1, HighScoreDisplay;
     ImageButton HelpButton;
-    View MainDisplay, FlipContainer;
 
     Character lastLetter, inputLetter;
     int score = 0, viewWidth = 2000, HighScore, turnTime, NewEggCount = 0, EggCount;
     Random RandomGenerator;
     boolean run = true, Sound, PreviouslyDiscovered;
 
-    Bitmap dr, drOriginal;
-    Animation FlipStart, FlipEnd;
-    ArcGrowAnimation animationGrow;
-    ValueAnimator SaturationAnimator;
     MediaPlayer CorrentSound;
-    Handler focusHandler = new Handler(), messageHandler = new Handler();
-
     PopupWindow popup;
+
+    Handler focusHandler = new Handler();
+    GameDial gameDial;
 
     public ArrayList<String> InputAnimalList, NewlyDiscoveredAnimals, PreviouslyDiscoveredAnimals;
 
@@ -83,20 +75,15 @@ public class Game extends AppCompatActivity {
         InputAnimalList = new ArrayList<>();
         RandomGenerator = new Random();
 
-        arcView = (ArcView) findViewById(R.id.ArcTimerView);
-        AnimalImageView = (ImageView) findViewById(R.id.AnimalImageView);
+        gameDial = (GameDial) findViewById(R.id.game_dial);
         HelpButton = (ImageButton) findViewById(R.id.help_button);
-        ScoreDisplay = (TextView) findViewById(R.id.ScoreDisplayView);
         HighScoreDisplay = (TextView) findViewById(R.id.highscore_display);
-        MainDisplay = findViewById(R.id.MainDisplay);
-        FlipContainer = findViewById(R.id.FlipContainer);
 
         InputTextEdit = (EditText) findViewById(R.id.InputTextEdit);
         InputText1 = (TextView) findViewById(R.id.InputText1);
 
         Typeface custom_font_hairline = Typeface.createFromAsset(getAssets(), "fonts/Lato-Thin.ttf");
 
-        ScoreDisplay.setTypeface(custom_font_hairline);
         InputTextEdit.setTypeface(custom_font_hairline);
         InputText1.setTypeface(custom_font_hairline);
         HighScoreDisplay.setTypeface(custom_font_hairline);
@@ -121,28 +108,6 @@ public class Game extends AppCompatActivity {
         }
 
         HighScoreDisplay.setText(String.valueOf(HighScore));
-        ScoreDisplay.setText(String.valueOf(score));
-
-        FlipStart = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.flip_start);
-        FlipEnd = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.flip_end);
-
-        FlipStart.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                AnimalImageView.setImageBitmap(dr);
-                ScoreDisplay.setText(String.valueOf(score));
-                ScoreDisplay.setTextSize(100);
-                FlipContainer.startAnimation(FlipEnd);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-        });
 
         final Handler gameStartHandler = new Handler();
         gameStartHandler.postDelayed(new Runnable() {
@@ -164,24 +129,6 @@ public class Game extends AppCompatActivity {
     }
 
     public void setupAnimations() {
-        animationShrink = new ArcShrinkAnimation(arcView);
-        animationShrink.setDuration(turnTime);
-        arcView.startAnimation(animationShrink);
-
-        animationShrink.setAnimationListener(new Animation.AnimationListener()
-        {
-            @Override
-            public void onAnimationStart(Animation animation){}
-
-            @Override
-            public void onAnimationRepeat(Animation animation){}
-
-            @Override
-            public void onAnimationEnd(Animation animation)
-            {
-                GameOver();
-            }
-        });
 
         InputTextEdit.setSelection(1);
         InputTextEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -192,66 +139,6 @@ public class Game extends AppCompatActivity {
                     return true;
                 }
                 return false;
-            }
-        });
-
-        SaturationAnimator = ValueAnimator.ofFloat(0f, 1f);
-        SaturationAnimator.setDuration(2000);
-        SaturationAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                dr = toGrayscale(drOriginal, SaturationAnimator.getAnimatedFraction());
-                AnimalImageView.setImageBitmap(dr);
-            }
-        });
-
-        animationGrow = new ArcGrowAnimation(arcView);
-        animationGrow.setDuration(1000);
-
-        arcDiscoveryAnimation = new ArcShrinkAnimation(arcView);
-        arcDiscoveryAnimation.setDuration(1000);
-
-        arcDiscoveryAnimation.setAnimationListener(new Animation.AnimationListener()
-        {
-            @Override
-            public void onAnimationStart(Animation animation){
-                Animation Focus = AnimationUtils.loadAnimation(getApplicationContext(),
-                        R.anim.grow_shrink);
-                MainDisplay.startAnimation(Focus);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation){}
-
-            @Override
-            public void onAnimationEnd(Animation animation)
-            {
-                SaturationAnimator.start();
-                animationGrow.updateAngle();
-                arcView.startAnimation(animationGrow);
-            }
-        });
-
-        animationGrow.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                arcView.startAnimation(animationShrink);
-
-                int random = RandomGenerator.nextInt(50);
-
-                if (random<=10) {
-                    NewEggCount += 1;
-                    EggCount += 1;
-                    animateIcon();
-                }
             }
         });
     }
@@ -284,49 +171,44 @@ public class Game extends AppCompatActivity {
             if ((inputLetter == lastLetter) && (A != -1) && !InputAnimalList.contains(Globals.Animals.get(A)) &&
                     (Globals.Animals.get(A).charAt(0) == inputLetter)) {
 
+                score = score + 1;
+                String lastAnimal = Globals.Animals.get(A);
+
+                gameDial.regenerate(score, lastAnimal);
                 animateNewText();
-                messageHandler.removeCallbacksAndMessages(null);
+
+                int random = RandomGenerator.nextInt(50);
+                if (random<=10) {
+                    NewEggCount += 1;
+                    EggCount += 1;
+                    animateIcon();
+                }
 
                 if (Sound) {
                     CorrentSound = MediaPlayer.create(getApplicationContext(), R.raw.correct);
                     CorrentSound.start();
                 }
 
-                String lastAnimal = Globals.Animals.get(A);
                 InputAnimalList.add(lastAnimal);
                 lastLetter = Character.toUpperCase(lastAnimal.charAt(lastAnimal.length() - 1));
 
                 InputTextEdit.setText(Character.toString(lastLetter).toUpperCase());
                 InputTextEdit.setSelection(1);
 
-                score = score + 1;
-                FlipContainer.startAnimation(FlipStart);
-
-                drOriginal = BitmapFactory.decodeResource(getResources(),
-                        getResources().getIdentifier(Globals.Animals.get(A).toLowerCase() + "imagesmall", "drawable",
-                                getPackageName()));
-
                 if (!PreviouslyDiscoveredAnimals.contains(Globals.Animals.get(A))) {
                     PreviouslyDiscovered = false;
 
                     NewlyDiscoveredAnimals.add(Globals.Animals.get(A));
-                    dr = toGrayscale(drOriginal, 0);
 
-                    arcDiscoveryAnimation.updateAngle();
-                    arcView.startAnimation(arcDiscoveryAnimation);
                 } else {
                     PreviouslyDiscovered = true;
-                    dr = drOriginal;
-
-                    animationGrow.updateAngle();
-                    arcView.startAnimation(animationGrow);
                 }
 
                 focusHandler.removeCallbacksAndMessages(null);
                 focusHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        displayMessage("Time is running out!", false);
+                        //displayMessage("Time is running out!", false);
 
                         MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.timer);
                         mp.start();
@@ -336,7 +218,7 @@ public class Game extends AppCompatActivity {
                 }, turnTime-3000);
 
             } else if (A == -1) {
-                displayMessage("Is that an animal?", true);
+                //displayMessage("Is that an animal?", true);
 
                 if (Sound) {
                     MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.no);
@@ -344,7 +226,7 @@ public class Game extends AppCompatActivity {
                 }
 
             } else if (inputLetter != lastLetter) {
-                displayMessage("Doesn't start with a " + Character.toString(lastLetter).toUpperCase() + "!", true);
+                //displayMessage("Doesn't start with a " + Character.toString(lastLetter).toUpperCase() + "!", true);
 
                 if (Sound) {
                     MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.no);
@@ -352,7 +234,7 @@ public class Game extends AppCompatActivity {
                 }
 
             } else if (InputAnimalList.contains(Globals.Animals.get(A))) {
-                displayMessage("Already got that one!", true);
+                //displayMessage("Already got that one!", true);
 
                 if (Sound) {
                     MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.no);
@@ -360,7 +242,7 @@ public class Game extends AppCompatActivity {
                 }
 
             } else if (Globals.Animals.get(A).charAt(0) != inputLetter) {
-                displayMessage("Sneaky!", true);
+                //displayMessage("Sneaky!", true);
 
                 if (Sound) {
                     MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.no);
@@ -368,117 +250,6 @@ public class Game extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    public void displayMessage(final String Message, Boolean highlight) {
-
-        final Animation MessageFlipStart = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.flip_start);
-        final Animation MessageFlipEnd = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.flip_end);
-
-        MessageFlipStart.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                ScoreDisplay.setTextSize(40);
-                ScoreDisplay.setText(Message);
-                ScoreDisplay.startAnimation(MessageFlipEnd);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-        });
-
-        ScoreDisplay.startAnimation(MessageFlipStart);
-
-        if (highlight) {
-            InputTextEdit.selectAll();
-        }
-
-        messageHandler.removeCallbacksAndMessages(null);
-        messageHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                MessageFlipStart.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {}
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        ScoreDisplay.setTextSize(80);
-                        ScoreDisplay.setText(String.valueOf(score));
-                        ScoreDisplay.startAnimation(MessageFlipEnd);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {}
-                });
-
-                ScoreDisplay.startAnimation(MessageFlipStart);
-                messageHandler.removeCallbacks(this);
-            }
-        }, 2000);
-
-        Animation Shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
-        InputTextEdit.startAnimation(Shake);
-        HelpButton.startAnimation(Shake);
-
-        Animation Focus = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.grow_shrink);
-        MainDisplay.startAnimation(Focus);
-    }
-
-    public void displayMessageWithImage(final String Message, final Bitmap tempDrawable) {
-        final Animation ContainerFlipStart = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.flip_start);
-        final Animation ContainerFlipEnd = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.flip_end);
-
-        ContainerFlipStart.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                AnimalImageView.setImageBitmap(tempDrawable);
-                ScoreDisplay.setText(Message);
-                ScoreDisplay.setTextSize(40);
-                FlipContainer.startAnimation(ContainerFlipEnd);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-        });
-
-        FlipContainer.startAnimation(ContainerFlipStart);
-
-        messageHandler.removeCallbacksAndMessages(null);
-        messageHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ContainerFlipStart.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {}
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        AnimalImageView.setImageBitmap(dr);
-                        ScoreDisplay.setTextSize(80);
-                        ScoreDisplay.setText(String.valueOf(score));
-                        FlipContainer.startAnimation(ContainerFlipEnd);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {}
-                });
-
-                FlipContainer.startAnimation(ContainerFlipStart);
-                messageHandler.removeCallbacks(this);
-            }
-        }, 2000);
     }
 
     public void animateNewText() {
@@ -528,9 +299,16 @@ public class Game extends AppCompatActivity {
 
         setupAnimations();
 
-        ObjectAnimator titleAnimator= ObjectAnimator.ofFloat(InputTextEdit, "translationX", 1000, 0);
-        titleAnimator.setDuration(1000);
-        titleAnimator.start();
+        gameDial.startTimer(new Runnable() {
+            @Override
+            public void run() {
+                GameOver();
+            }
+        });
+
+        ObjectAnimator textAnimator= ObjectAnimator.ofFloat(InputTextEdit, "translationX", 1000, 0);
+        textAnimator.setDuration(1000);
+        textAnimator.start();
     }
 
     private Bitmap toGrayscale(Bitmap bmpOriginal, float sat) {
@@ -607,9 +385,9 @@ public class Game extends AppCompatActivity {
                     drSuggested = toGrayscale(drSuggested, 0);
                 }
 
-                displayMessageWithImage("This animal would work!", drSuggested);
+                //displayMessageWithImage("This animal would work!", drSuggested);
             } else {
-                displayMessage("No animals start with a " + Character.toString(lastLetter).toUpperCase() + "?!", false);
+                //displayMessage("No animals start with a " + Character.toString(lastLetter).toUpperCase() + "?!", false);
             }
         } else {
             System.out.println("Sorry you dont have enough eggs to get a hint");
@@ -625,8 +403,9 @@ public class Game extends AppCompatActivity {
             NewEggCount -= 6;
             animateIcon();
 
-            animationGrow.updateAngle();
-            arcView.startAnimation(animationGrow);
+            //////////////////////////////////////
+            // reload time                      //
+            //////////////////////////////////////
         } else {
             System.out.println("Sorry you dont have enough eggs to get more time");
         }
@@ -644,9 +423,9 @@ public class Game extends AppCompatActivity {
             String suggestedAnimal = FindAnimal(Character.toString(lastLetter).toUpperCase());
 
             if (suggestedAnimal != null) {
-                displayMessage("What about a " + suggestedAnimal + "?", true);
+                //displayMessage("What about a " + suggestedAnimal + "?", true);
             } else {
-                displayMessage("No animals start with a " + Character.toString(lastLetter).toUpperCase() + "?!", false);
+                //displayMessage("No animals start with a " + Character.toString(lastLetter).toUpperCase() + "?!", false);
             }
         } else {
             System.out.println("Sorry you dont have enough eggs to skip");

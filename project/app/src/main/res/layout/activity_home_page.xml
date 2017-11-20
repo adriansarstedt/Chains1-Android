@@ -98,10 +98,10 @@
                 android:onClick="OpenResearchCenter"/>
 
             <ImageButton
-                android:id="@+id/AchievementsButton"
+                android:id="@+id/MoreButton"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@drawable/highscore_icon"
+                android:background="@drawable/more_icon"
                 android:layout_margin="10dp"/>
 
             <ImageButton

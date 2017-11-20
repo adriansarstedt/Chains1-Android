@@ -48,48 +48,10 @@
         android:layout_width="match_parent"
         android:layout_height="10dp" />
 
-    <RelativeLayout
-        android:id="@+id/MainDisplay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-
-        <ImageView
-            android:id="@+id/DiscoveredMargin"
-            android:layout_width="610px"
-            android:layout_height="610px"
-            android:layout_centerInParent="true"
-            android:background="@drawable/image_background_discovered"/>
-
-        <com.example.adriansarstedt.words2.ArcView
-            android:id="@+id/ArcTimerView"
-            android:layout_width="700px"
-            android:layout_height="700px"
-            android:layout_centerInParent="true"/>
-
-        <RelativeLayout
-            android:id="@+id/FlipContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-
-            <ImageView
-                android:id="@+id/AnimalImageView"
-                android:layout_width="610px"
-                android:layout_height="610px"
-                android:layout_centerInParent="true"/>
-
-            <TextView
-                android:id="@+id/ScoreDisplayView"
-                android:textSize="100dp"
-                android:layout_width="600px"
-                android:textColor="#ffffff"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textAlignment="center"/>
-        </RelativeLayout>
-
-    </RelativeLayout>
+    <com.example.adriansarstedt.words2.GameDial
+        android:id="@+id/game_dial"
+        android:layout_width="250dp"
+        android:layout_height="250dp"/>
 
     <Space
         android:layout_width="match_parent"

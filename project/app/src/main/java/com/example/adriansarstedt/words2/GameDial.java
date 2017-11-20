@@ -24,13 +24,14 @@ public class GameDial extends LinearLayout {
     ArcView av;
     ImageView iv;
     View bg, fc, md;
+    Context ctx;
 
     int shrinkDuration = 10000, growDuration = 1000;
 
     ArcShrinkAnimation asa, ada;
     ArcGrowAnimation aga;
     ValueAnimator SaturationAnimator;
-    Animation flipStart, flipEnd, imageFlipStart, focus, shake;
+    Animation flipStart, flipEnd, imageFlipStart, imageFlipEnd, focus, shake;
 
     Bitmap dr, drOriginal;
 
@@ -40,11 +41,13 @@ public class GameDial extends LinearLayout {
     public GameDial(Context context) {
         super(context);
         initializeViews(context);
+        ctx = context;
     }
 
     public GameDial(Context context, AttributeSet attrs) {
         super(context, attrs);
         initializeViews(context);
+        ctx = context;
     }
 
     public GameDial(Context context,
@@ -52,6 +55,7 @@ public class GameDial extends LinearLayout {
                            int defStyle) {
         super(context, attrs, defStyle);
         initializeViews(context);
+        ctx = context;
     }
 
     private void initializeViews(Context context) {
@@ -99,8 +103,8 @@ public class GameDial extends LinearLayout {
     }
 
     public void regenerate(int newScore, String newAnimal) {
-        drOriginal = BitmapFactory.decodeResource(getResources(),
-                getResources().getIdentifier(newAnimal + "imagesmall", "drawable",
+        drOriginal = BitmapFactory.decodeResource(ctx.getResources(),
+                ctx.getResources().getIdentifier(newAnimal.toLowerCase() + "imagesmall", "drawable",
                         getContext().getPackageName()));
 
         aga.updateAngle();
@@ -164,7 +168,7 @@ public class GameDial extends LinearLayout {
 
                 if (newImage != null) {
                     iv.setImageBitmap(newImage);
-                    iv.startAnimation(flipEnd);
+                    iv.startAnimation(imageFlipEnd);
                 }
             }
 
@@ -240,6 +244,8 @@ public class GameDial extends LinearLayout {
         messageHandler = new Handler();
         imageFlipStart = AnimationUtils.loadAnimation(getContext(),
                 R.anim.flip_start);
+        imageFlipEnd = AnimationUtils.loadAnimation(getContext(),
+                R.anim.flip_end);
         flipStart = AnimationUtils.loadAnimation(getContext(),
                 R.anim.flip_start);
         flipEnd = AnimationUtils.loadAnimation(getContext(),
