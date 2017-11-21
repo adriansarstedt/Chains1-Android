@@ -22,7 +22,7 @@ public class HelpFragment4 extends Fragment {
                 gd.startTimer(new Runnable() {
                     @Override
                     public void run() {
-                        gd.displayMessage("Hello", null, null, null);
+                        gd.displayMessage("Hello", null, false);
                     }
                 });
             }

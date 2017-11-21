@@ -14,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,6 +37,10 @@ public class GameDial extends LinearLayout {
     Bitmap dr, drOriginal;
 
     Handler messageHandler;
+
+    Game game;
+    EditText et;
+    ImageButton ib;
 
 
     public GameDial(Context context) {
@@ -84,6 +89,12 @@ public class GameDial extends LinearLayout {
         super.onFinishInflate();
     }
 
+    public void setGame(Game game) {
+        this.game = game;
+        this.et = game.InputTextEdit;
+        this.ib = game.HelpButton;
+    }
+
     public void startTimer(final Runnable endAction) {
         asa.setAnimationListener(new Animation.AnimationListener()
         {
@@ -116,18 +127,23 @@ public class GameDial extends LinearLayout {
     public void discovery(int newScore, String newAnimal) {
     }
 
-    public void displayMessage(final String message, EditText highlightText, Button helpButton, final Bitmap tmpDr) {
+    public void displayMessage(final String message, final Bitmap tmpDr, boolean highlight) {
 
-        final String oldText = tv.getText().toString();
-        final Bitmap oldBitmap = ((BitmapDrawable)iv.getBackground()).getBitmap();
+        Bitmap tOldBitmap = null;
+        if (iv.getBackground() != null) {
+            tOldBitmap = ((BitmapDrawable)iv.getBackground()).getBitmap();
+        }
+        final Bitmap oldBitmap = tOldBitmap;
 
-        if (highlightText != null) {
-            highlightText.selectAll();
-            highlightText.startAnimation(shake);
+        if (et != null) {
+            if (highlight) {
+                et.selectAll();
+            }
+            et.startAnimation(shake);
         }
 
-        if (helpButton != null) {
-            helpButton.startAnimation(shake);
+        if (ib != null) {
+            ib.startAnimation(shake);
         }
 
         updateDisplay(message, tmpDr, 40);
@@ -138,9 +154,9 @@ public class GameDial extends LinearLayout {
             public void run() {
 
                 if (tmpDr != null) {
-                    updateDisplay(oldText, oldBitmap, 80);
+                    updateDisplay(String.valueOf(game.score), oldBitmap, 80);
                 } else {
-                    updateDisplay(oldText, null, 80);
+                    updateDisplay(String.valueOf(game.score), null, 80);
                 }
 
 

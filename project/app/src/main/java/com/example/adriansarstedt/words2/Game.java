@@ -126,6 +126,8 @@ public class Game extends AppCompatActivity {
             }
         }, 1000);
 
+        gameDial.setGame(this);
+
     }
 
     public void setupAnimations() {
@@ -208,7 +210,7 @@ public class Game extends AppCompatActivity {
                 focusHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        //displayMessage("Time is running out!", false);
+                        gameDial.displayMessage("Time is running out!", null, false);
 
                         MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.timer);
                         mp.start();
@@ -218,7 +220,7 @@ public class Game extends AppCompatActivity {
                 }, turnTime-3000);
 
             } else if (A == -1) {
-                //displayMessage("Is that an animal?", true);
+                gameDial.displayMessage("Is that an animal?", null, true);
 
                 if (Sound) {
                     MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.no);
@@ -226,7 +228,7 @@ public class Game extends AppCompatActivity {
                 }
 
             } else if (inputLetter != lastLetter) {
-                //displayMessage("Doesn't start with a " + Character.toString(lastLetter).toUpperCase() + "!", true);
+                gameDial.displayMessage("Doesn't start with a " + Character.toString(lastLetter).toUpperCase() + "!", null, true);
 
                 if (Sound) {
                     MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.no);
@@ -234,7 +236,7 @@ public class Game extends AppCompatActivity {
                 }
 
             } else if (InputAnimalList.contains(Globals.Animals.get(A))) {
-                //displayMessage("Already got that one!", true);
+                gameDial.displayMessage("Already got that one!", null, true);
 
                 if (Sound) {
                     MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.no);
@@ -242,7 +244,7 @@ public class Game extends AppCompatActivity {
                 }
 
             } else if (Globals.Animals.get(A).charAt(0) != inputLetter) {
-                //displayMessage("Sneaky!", true);
+                gameDial.displayMessage("Sneaky!", null, true);
 
                 if (Sound) {
                     MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.no);
@@ -385,12 +387,12 @@ public class Game extends AppCompatActivity {
                     drSuggested = toGrayscale(drSuggested, 0);
                 }
 
-                //displayMessageWithImage("This animal would work!", drSuggested);
+                gameDial.displayMessage("This animal would work!", drSuggested, true);
             } else {
-                //displayMessage("No animals start with a " + Character.toString(lastLetter).toUpperCase() + "?!", false);
+                gameDial.displayMessage("No animals start with a " + Character.toString(lastLetter).toUpperCase() + "?!", null, true);
             }
         } else {
-            System.out.println("Sorry you dont have enough eggs to get a hint");
+            gameDial.displayMessage("Not Enough Eggs!", null, false);
         }
     }
 
@@ -407,7 +409,7 @@ public class Game extends AppCompatActivity {
             // reload time                      //
             //////////////////////////////////////
         } else {
-            System.out.println("Sorry you dont have enough eggs to get more time");
+            gameDial.displayMessage("Not Enough Eggs!", null, false);
         }
     }
 
@@ -428,7 +430,7 @@ public class Game extends AppCompatActivity {
                 //displayMessage("No animals start with a " + Character.toString(lastLetter).toUpperCase() + "?!", false);
             }
         } else {
-            System.out.println("Sorry you dont have enough eggs to skip");
+            gameDial.displayMessage("Not Enough Eggs!", null, false);
         }
     }
 
