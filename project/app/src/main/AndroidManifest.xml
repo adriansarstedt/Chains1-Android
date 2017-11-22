@@ -21,9 +21,6 @@
         <activity
             android:name=".Game"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity
-            android:name=".GameOver"
-            android:theme="@style/Transparent"/>
         <activity android:name=".ResearchCenter"/>
         <activity android:name=".Options"/>
         <activity

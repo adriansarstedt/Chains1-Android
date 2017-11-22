@@ -78,6 +78,37 @@ public class Globals extends Application {
         return bmpGrayscale;
     }
 
+    public static ArrayList<String> FindAnimalsStartingWith(String FirstLetter, ArrayList<String> CounterList) {
+        ArrayList<String> FilteredAnimals = new ArrayList<>();
+
+        boolean firstFound = false, lastFound = false;
+
+        if (CounterList == null) {
+            CounterList = new ArrayList<String>();
+        }
+
+        for (int i=0; i<Globals.Animals.size(); i++) {
+            if (!firstFound && !lastFound) {
+                if (Globals.Animals.get(i).startsWith(FirstLetter) && !CounterList.contains(Globals.Animals.get(i))) {
+                    FilteredAnimals.add(0, Globals.Animals.get(i));
+                    firstFound = true;
+                }
+            } else if (firstFound && !lastFound) {
+                if (Globals.Animals.get(i).startsWith(FirstLetter) && !CounterList.contains(Globals.Animals.get(i))) {
+                    FilteredAnimals.add(0, Globals.Animals.get(i));
+                } else {
+                    lastFound = true;
+                }
+            }
+        }
+
+        if (FilteredAnimals.size() != 0) {
+            return FilteredAnimals;
+        } else {
+            return null;
+        }
+    }
+
     public static int editDistance(String s1, String s2) {
         s1 = s1.toLowerCase();
         s2 = s2.toLowerCase();

@@ -56,6 +56,7 @@ public class Game extends AppCompatActivity {
 
     MediaPlayer CorrentSound;
     PopupWindow popup;
+    String lastAnimal;
 
     Handler focusHandler = new Handler();
     GameDial gameDial;
@@ -117,6 +118,7 @@ public class Game extends AppCompatActivity {
                 Random randomGenerator = new Random();
                 int startIndex = randomGenerator.nextInt(Globals.Letters.size());
                 lastLetter = Globals.Letters.get(startIndex).charAt(0);
+                lastAnimal = Character.toString(lastLetter);
 
                 InputTextEdit.setText(Character.toString(lastLetter));
                 InputTextEdit.requestFocus();
@@ -174,7 +176,7 @@ public class Game extends AppCompatActivity {
                     (Globals.Animals.get(A).charAt(0) == inputLetter)) {
 
                 score = score + 1;
-                String lastAnimal = Globals.Animals.get(A);
+                lastAnimal = Globals.Animals.get(A);
 
                 gameDial.regenerate(score, lastAnimal);
                 animateNewText();
@@ -294,6 +296,8 @@ public class Game extends AppCompatActivity {
         GameOverIntent.putExtra("score", score);
         GameOverIntent.putExtra("NewEggCount", NewEggCount);
         GameOverIntent.putExtra("newlyDiscoveredAnimals", TextUtils.join("-", NewlyDiscoveredAnimals));
+        GameOverIntent.putExtra("inputAnimals", TextUtils.join("-", InputAnimalList));
+        GameOverIntent.putExtra("LastAnimal", lastAnimal);
         startActivity(GameOverIntent);
     }
 
@@ -311,22 +315,6 @@ public class Game extends AppCompatActivity {
         ObjectAnimator textAnimator= ObjectAnimator.ofFloat(InputTextEdit, "translationX", 1000, 0);
         textAnimator.setDuration(1000);
         textAnimator.start();
-    }
-
-    private Bitmap toGrayscale(Bitmap bmpOriginal, float sat) {
-        int width, height;
-        height = bmpOriginal.getHeight();
-        width = bmpOriginal.getWidth();
-
-        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(bmpGrayscale);
-        Paint paint = new Paint();
-        ColorMatrix cm = new ColorMatrix();
-        cm.setSaturation(sat);
-        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
-        paint.setColorFilter(f);
-        c.drawBitmap(bmpOriginal, 0, 0, paint);
-        return bmpGrayscale;
     }
 
     public void help(View view) {
@@ -374,8 +362,8 @@ public class Game extends AppCompatActivity {
             NewEggCount -= 4;
             animateIcon();
 
-            String suggestedAnimal = FindAnimal(Character.toString(lastLetter).toUpperCase());
-
+            ArrayList<String> SuggestedAnimals = Globals.FindAnimalsStartingWith(Character.toString(lastLetter).toUpperCase(), InputAnimalList);
+            String suggestedAnimal = SuggestedAnimals.get(RandomGenerator.nextInt(SuggestedAnimals.size()));
 
             if (suggestedAnimal != null) {
 
@@ -384,7 +372,7 @@ public class Game extends AppCompatActivity {
                                 getPackageName()));
 
                 if (!PreviouslyDiscoveredAnimals.contains(suggestedAnimal)) {
-                    drSuggested = toGrayscale(drSuggested, 0);
+                    drSuggested = Globals.toGrayscale(drSuggested, 0);
                 }
 
                 gameDial.displayMessage("This animal would work!", drSuggested, true);
@@ -422,42 +410,16 @@ public class Game extends AppCompatActivity {
             NewEggCount -= 20;
             animateIcon();
 
-            String suggestedAnimal = FindAnimal(Character.toString(lastLetter).toUpperCase());
+            ArrayList<String> SuggestedAnimals = Globals.FindAnimalsStartingWith(Character.toString(lastLetter).toUpperCase(), null);
+            String suggestedAnimal = SuggestedAnimals.get(RandomGenerator.nextInt(SuggestedAnimals.size()));
 
             if (suggestedAnimal != null) {
-                //displayMessage("What about a " + suggestedAnimal + "?", true);
+                //gameDial.displayMessage("What about a " + suggestedAnimal + "?", true);
             } else {
                 //displayMessage("No animals start with a " + Character.toString(lastLetter).toUpperCase() + "?!", false);
             }
         } else {
             gameDial.displayMessage("Not Enough Eggs!", null, false);
-        }
-    }
-
-    public String FindAnimal(String FirstLetter) {
-        ArrayList<String> FilteredAnimals = new ArrayList<>();
-
-        boolean firstFound = false, lastFound = false;
-
-        for (int i=0; i<Globals.Animals.size(); i++) {
-            if (!firstFound && !lastFound) {
-                if (Globals.Animals.get(i).startsWith(FirstLetter) && !InputAnimalList.contains(Globals.Animals.get(i))) {
-                    FilteredAnimals.add(0, Globals.Animals.get(i));
-                    firstFound = true;
-                }
-            } else if (firstFound && !lastFound) {
-                if (Globals.Animals.get(i).startsWith(FirstLetter) && !InputAnimalList.contains(Globals.Animals.get(i))) {
-                    FilteredAnimals.add(0, Globals.Animals.get(i));
-                } else {
-                    lastFound = true;
-                }
-            }
-        }
-
-        if (FilteredAnimals.size() != 0) {
-            return FilteredAnimals.get(RandomGenerator.nextInt(FilteredAnimals.size()));
-        } else {
-            return null;
         }
     }
 }

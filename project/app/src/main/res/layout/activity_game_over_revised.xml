@@ -8,7 +8,6 @@
     tools:context="com.example.adriansarstedt.words2.GameOverRevised">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/activity_game"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -25,16 +24,15 @@
             android:textAlignment="center"
             android:text="@string/well_done"
             android:textColor="#ffffff"
-            android:textSize="90sp"
+            android:textSize="75sp"
             android:paddingTop="20dp"
             />
 
         <TextView
-            android:id="@+id/EggSlogan"
+            android:id="@+id/Slogan"
             android:background="@drawable/progressbar_outer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:textAlignment="center"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="20dp"
@@ -45,8 +43,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:textSize="20sp"
-            android:textColor="#ddffffff"
-            android:text="USE EGGS TO GET HELP IN TIMES OF NEED!"/>
+            android:textColor="#ddffffff" />
 
         <ViewAnimator
             android:id="@+id/AchievementViewAnimator"
@@ -55,57 +52,48 @@
             android:gravity="center_horizontal"
             android:textAlignment="center">
 
-            <TextView
-                android:id="@+id/ScoreLabel"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:textColor="#ffffff"
-                android:textSize="80sp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                />
+                android:textAlignment="center">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_gravity="center">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/image_background_discovered"
+                    />
+
+                <ImageView
+                    android:id="@+id/ScoreContainer"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    />
+
+                <TextView
+                    android:id="@+id/ScoreLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:orientation="horizontal">
+                    android:textColor="#ffffff"
+                    android:textSize="80sp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_centerInParent="true"
+                    />
 
-                    <TextView
-                        android:id="@+id/EggLabel"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:textColor="#ffffff"
-                        android:textSize="80sp"
-                        android:text="1"
-                        />
-
-                    <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:gravity="center"
-                        android:src="@drawable/egg2"
-                        />
-                </LinearLayout>
-            </LinearLayout>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:layout_gravity="center"
                 android:textAlignment="center">
 
                 <ImageView
@@ -125,10 +113,8 @@
                     android:textSize="80sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:text="1"
                     android:layout_centerInParent="true"
                     />
-
 
             </RelativeLayout>
 
@@ -172,6 +158,40 @@
                     android:layout_marginTop="-40dp"
                     android:clipToPadding="false" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/EggLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        android:textSize="80sp"
+                        android:text="1"
+                        />
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:gravity="center"
+                        android:src="@drawable/egg2"
+                        />
+                </LinearLayout>
             </LinearLayout>
 
         </ViewAnimator>
