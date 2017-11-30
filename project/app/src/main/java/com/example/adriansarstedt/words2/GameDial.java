@@ -26,13 +26,14 @@ public class GameDial extends LinearLayout {
     ImageView iv;
     View bg, fc, md;
     Context ctx;
+    int score = 0;
 
     int shrinkDuration = 10000, growDuration = 1000;
 
     ArcShrinkAnimation asa, ada;
     ArcGrowAnimation aga;
     ValueAnimator SaturationAnimator;
-    Animation flipStart, flipEnd, imageFlipStart, imageFlipEnd, focus, shake;
+    Animation flipStart, flipEnd, imageFlipStart, imageFlipEnd, focus, shake_small, shake_large;
 
     Bitmap dr, drOriginal;
 
@@ -95,6 +96,16 @@ public class GameDial extends LinearLayout {
         this.ib = game.HelpButton;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void reset() {
+        score = 0;
+        tv.setText(String.valueOf(score));
+        iv.setImageDrawable(null);
+    }
+
     public void startTimer(final Runnable endAction) {
         asa.setAnimationListener(new Animation.AnimationListener()
         {
@@ -113,14 +124,22 @@ public class GameDial extends LinearLayout {
         av.startAnimation(asa);
     }
 
-    public void regenerate(int newScore, String newAnimal) {
+    public void resetTimer() {
+        aga.updateAngle();
+        av.startAnimation(aga);
+    }
+
+    public void regenerate(String newAnimal) {
+
+        score += 1;
+
         drOriginal = BitmapFactory.decodeResource(ctx.getResources(),
                 ctx.getResources().getIdentifier(newAnimal.toLowerCase() + "imagesmall", "drawable",
                         getContext().getPackageName()));
 
         aga.updateAngle();
         av.startAnimation(aga);
-        updateDisplay(String.valueOf(newScore), drOriginal, 80);
+        updateDisplay(String.valueOf(score), drOriginal, 80);
 
     }
 
@@ -139,11 +158,11 @@ public class GameDial extends LinearLayout {
             if (highlight) {
                 et.selectAll();
             }
-            et.startAnimation(shake);
+            et.startAnimation(shake_small);
         }
 
         if (ib != null) {
-            ib.startAnimation(shake);
+            ib.startAnimation(shake_large);
         }
 
         updateDisplay(message, tmpDr, 40);
@@ -154,9 +173,9 @@ public class GameDial extends LinearLayout {
             public void run() {
 
                 if (tmpDr != null) {
-                    updateDisplay(String.valueOf(game.score), oldBitmap, 80);
+                    updateDisplay(String.valueOf(score), oldBitmap, 80);
                 } else {
-                    updateDisplay(String.valueOf(game.score), null, 80);
+                    updateDisplay(String.valueOf(score), null, 80);
                 }
 
 
@@ -268,6 +287,7 @@ public class GameDial extends LinearLayout {
                 R.anim.flip_end);
         focus = AnimationUtils.loadAnimation(getContext(),
                 R.anim.grow_shrink);
-        shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
+        shake_small = AnimationUtils.loadAnimation(getContext(), R.anim.shake_small);
+        shake_large = AnimationUtils.loadAnimation(getContext(), R.anim.shake_large);
     }
 }

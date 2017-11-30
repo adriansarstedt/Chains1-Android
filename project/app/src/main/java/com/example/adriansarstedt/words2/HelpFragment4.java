@@ -22,9 +22,16 @@ public class HelpFragment4 extends Fragment {
                 gd.startTimer(new Runnable() {
                     @Override
                     public void run() {
-                        gd.displayMessage("Hello", null, false);
+                        gd.displayMessage("Game Over!", null, false);
                     }
                 });
+
+                gt.animateIn("A", "NT", 5000, gd, false);
+                gt.animateOut("AN", "T", 6500, gd);
+            } else {
+                gd.reset();
+                gt.setTextA("");
+                gt.setTextB("A");
             }
         }
     }

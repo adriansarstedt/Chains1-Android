@@ -50,7 +50,7 @@ public class Game extends AppCompatActivity {
     ImageButton HelpButton;
 
     Character lastLetter, inputLetter;
-    int score = 0, viewWidth = 2000, HighScore, turnTime, NewEggCount = 0, EggCount;
+    int viewWidth = 2000, HighScore, turnTime, NewEggCount = 0, EggCount;
     Random RandomGenerator;
     boolean run = true, Sound, PreviouslyDiscovered;
 
@@ -60,6 +60,7 @@ public class Game extends AppCompatActivity {
 
     Handler focusHandler = new Handler();
     GameDial gameDial;
+    PopInDisplay popInDisplay;
 
     public ArrayList<String> InputAnimalList, NewlyDiscoveredAnimals, PreviouslyDiscoveredAnimals;
 
@@ -77,6 +78,7 @@ public class Game extends AppCompatActivity {
         RandomGenerator = new Random();
 
         gameDial = (GameDial) findViewById(R.id.game_dial);
+        popInDisplay = (PopInDisplay) findViewById(R.id.pop_in_display);
         HelpButton = (ImageButton) findViewById(R.id.help_button);
         HighScoreDisplay = (TextView) findViewById(R.id.highscore_display);
 
@@ -175,17 +177,16 @@ public class Game extends AppCompatActivity {
             if ((inputLetter == lastLetter) && (A != -1) && !InputAnimalList.contains(Globals.Animals.get(A)) &&
                     (Globals.Animals.get(A).charAt(0) == inputLetter)) {
 
-                score = score + 1;
                 lastAnimal = Globals.Animals.get(A);
 
-                gameDial.regenerate(score, lastAnimal);
+                gameDial.regenerate(lastAnimal);
                 animateNewText();
 
                 int random = RandomGenerator.nextInt(50);
                 if (random<=10) {
                     NewEggCount += 1;
                     EggCount += 1;
-                    animateIcon();
+                    popInDisplay.newEggAnimation();
                 }
 
                 if (Sound) {
@@ -285,15 +286,11 @@ public class Game extends AppCompatActivity {
         });
     }
 
-    public void animateIcon() {
-        System.out.println("------ displaying icon ------");
-    }
-
     public void GameOver() {
         run = false;
 
         Intent GameOverIntent = new Intent(this, GameOverRevised.class);
-        GameOverIntent.putExtra("score", score);
+        GameOverIntent.putExtra("score", gameDial.score);
         GameOverIntent.putExtra("NewEggCount", NewEggCount);
         GameOverIntent.putExtra("newlyDiscoveredAnimals", TextUtils.join("-", NewlyDiscoveredAnimals));
         GameOverIntent.putExtra("inputAnimals", TextUtils.join("-", InputAnimalList));
@@ -318,8 +315,8 @@ public class Game extends AppCompatActivity {
     }
 
     public void help(View view) {
-        Animation Shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
-        HelpButton.startAnimation(Shake);
+        Animation ShakeSmall = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake_small);
+        HelpButton.startAnimation(ShakeSmall);
 
         final Activity context = Game.this;
 
@@ -360,12 +357,11 @@ public class Game extends AppCompatActivity {
 
             EggCount -= 4;
             NewEggCount -= 4;
-            animateIcon();
 
             ArrayList<String> SuggestedAnimals = Globals.FindAnimalsStartingWith(Character.toString(lastLetter).toUpperCase(), InputAnimalList);
-            String suggestedAnimal = SuggestedAnimals.get(RandomGenerator.nextInt(SuggestedAnimals.size()));
 
-            if (suggestedAnimal != null) {
+            if (SuggestedAnimals != null) {
+                String suggestedAnimal = SuggestedAnimals.get(RandomGenerator.nextInt(SuggestedAnimals.size()));
 
                 Bitmap drSuggested = BitmapFactory.decodeResource(getResources(),
                         getResources().getIdentifier(suggestedAnimal.toLowerCase() + "imagesmall", "drawable",
@@ -380,6 +376,7 @@ public class Game extends AppCompatActivity {
                 gameDial.displayMessage("No animals start with a " + Character.toString(lastLetter).toUpperCase() + "?!", null, true);
             }
         } else {
+            popup.dismiss();
             gameDial.displayMessage("Not Enough Eggs!", null, false);
         }
     }
@@ -391,12 +388,10 @@ public class Game extends AppCompatActivity {
 
             EggCount -= 6;
             NewEggCount -= 6;
-            animateIcon();
 
-            //////////////////////////////////////
-            // reload time                      //
-            //////////////////////////////////////
+            gameDial.resetTimer();
         } else {
+            popup.dismiss();
             gameDial.displayMessage("Not Enough Eggs!", null, false);
         }
     }
@@ -408,17 +403,26 @@ public class Game extends AppCompatActivity {
 
             EggCount -= 20;
             NewEggCount -= 20;
-            animateIcon();
 
             ArrayList<String> SuggestedAnimals = Globals.FindAnimalsStartingWith(Character.toString(lastLetter).toUpperCase(), null);
-            String suggestedAnimal = SuggestedAnimals.get(RandomGenerator.nextInt(SuggestedAnimals.size()));
 
-            if (suggestedAnimal != null) {
-                //gameDial.displayMessage("What about a " + suggestedAnimal + "?", true);
+            if (SuggestedAnimals != null) {
+                String suggestedAnimal = SuggestedAnimals.get(RandomGenerator.nextInt(SuggestedAnimals.size()));
+
+                Bitmap drSuggested = BitmapFactory.decodeResource(getResources(),
+                        getResources().getIdentifier(suggestedAnimal.toLowerCase() + "imagesmall", "drawable",
+                                getPackageName()));
+
+                if (!PreviouslyDiscoveredAnimals.contains(suggestedAnimal)) {
+                    drSuggested = Globals.toGrayscale(drSuggested, 0);
+                }
+
+                gameDial.displayMessage("What about "+suggestedAnimal+"!", drSuggested, true);
             } else {
-                //displayMessage("No animals start with a " + Character.toString(lastLetter).toUpperCase() + "?!", false);
+                gameDial.displayMessage("No animals left for " + Character.toString(lastLetter).toUpperCase(), null, false);
             }
         } else {
+            popup.dismiss();
             gameDial.displayMessage("Not Enough Eggs!", null, false);
         }
     }

@@ -48,10 +48,24 @@
         android:layout_width="match_parent"
         android:layout_height="10dp" />
 
-    <com.example.adriansarstedt.words2.GameDial
-        android:id="@+id/game_dial"
-        android:layout_width="250dp"
-        android:layout_height="250dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.example.adriansarstedt.words2.GameDial
+            android:id="@+id/game_dial"
+            android:layout_centerInParent="true"
+            android:layout_width="250dp"
+            android:layout_height="250dp"/>
+
+        <com.example.adriansarstedt.words2.PopInDisplay
+            android:id="@+id/pop_in_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            />
+    </RelativeLayout>
+
 
     <Space
         android:layout_width="match_parent"

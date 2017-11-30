@@ -57,7 +57,7 @@ public class GameTextDisplay extends LinearLayout {
         super.onFinishInflate();
     }
 
-    public void animateIn(final String leftPortion, final String rightPortion, int timeDelay, final ArcView arcView, final boolean isMessage) {
+    public void animateIn(final String leftPortion, final String rightPortion, int timeDelay, final GameDial gd, final boolean isMessage) {
 
         final Handler animationStartHandler = new Handler();
         animationStartHandler.postDelayed(new Runnable() {
@@ -85,11 +85,8 @@ public class GameTextDisplay extends LinearLayout {
                     }
                 });
 
-                if (arcView != null && !isMessage) {
-                    ArcGrowAnimation arcGrow = new ArcGrowAnimation(arcView);
-                    arcGrow.setDuration(1000);
-                    arcView.startAnimation(arcGrow);
-
+                if (gd != null && !isMessage) {
+                    gd.regenerate(leftPortion+rightPortion);
                 }
 
                 if (isMessage) {
@@ -102,7 +99,7 @@ public class GameTextDisplay extends LinearLayout {
         HandlerArray.add(animationStartHandler);
     }
 
-    public void animateOut(final String leftPortion, final String rightPortion, int timeDelay, final ArcView arcView) {
+    public void animateOut(final String leftPortion, final String rightPortion, int timeDelay, final GameDial gd) {
 
         final Handler animationStartHandler = new Handler();
         animationStartHandler.postDelayed(new Runnable() {
@@ -130,11 +127,9 @@ public class GameTextDisplay extends LinearLayout {
                 }
                 });
 
-                if (arcView != null) {
-                    ArcShrinkAnimation arcShrink = new ArcShrinkAnimation(arcView);
-                    arcShrink.setDuration(10000);
-                    arcView.startAnimation(arcShrink);
-                }
+                //if (gd != null) {
+                //    gd.regenerate(leftPortion+rightPortion);
+                //}
 
                 animationStartHandler.removeCallbacks(this);
             }
