@@ -2,6 +2,7 @@ package com.example.adriansarstedt.words2;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.animation.Animation;
@@ -117,7 +118,12 @@ public class PopInDisplay extends RelativeLayout {
     }
 
     public void newEggAnimation() {
+        this.icon.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.egg2));
+        this.startAnimation(slide_in);
+    }
 
+    public void newDiscoveryAnimation() {
+        this.icon.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.researchcenterimagesmall));
         this.startAnimation(slide_in);
     }
 }

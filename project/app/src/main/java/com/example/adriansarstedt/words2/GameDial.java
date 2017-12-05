@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -27,6 +26,7 @@ public class GameDial extends LinearLayout {
     View bg, fc, md;
     Context ctx;
     int score = 0;
+    boolean new_species_discovered = false;
 
     int shrinkDuration = 10000, growDuration = 1000;
 
@@ -129,7 +129,7 @@ public class GameDial extends LinearLayout {
         av.startAnimation(aga);
     }
 
-    public void regenerate(String newAnimal) {
+    public void regenerate(String newAnimal, boolean previouslyDiscovered) {
 
         score += 1;
 
@@ -137,13 +137,27 @@ public class GameDial extends LinearLayout {
                 ctx.getResources().getIdentifier(newAnimal.toLowerCase() + "imagesmall", "drawable",
                         getContext().getPackageName()));
 
+        if (previouslyDiscovered) {
+            discovery();
+        } else {
+            updateDisplay(String.valueOf(score), drOriginal, 80);
+        }
+
         aga.updateAngle();
         av.startAnimation(aga);
-        updateDisplay(String.valueOf(score), drOriginal, 80);
 
     }
 
-    public void discovery(int newScore, String newAnimal) {
+    public void discovery() {
+
+        dr = Globals.toGrayscale(drOriginal, 0);
+        new_species_discovered = true;
+        //av.startColorTransition();
+        this.startAnimation(focus);
+
+
+        updateDisplay(String.valueOf(score), dr, 80);
+
     }
 
     public void displayMessage(final String message, final Bitmap tmpDr, boolean highlight) {
@@ -202,6 +216,22 @@ public class GameDial extends LinearLayout {
                 tv.startAnimation(flipEnd);
 
                 if (newImage != null) {
+                    if (new_species_discovered) {
+
+                        SaturationAnimator.removeAllUpdateListeners();
+                        SaturationAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                if (SaturationAnimator.getAnimatedFraction()%0.1<0.02) {
+                                    dr = Globals.toGrayscale(drOriginal, SaturationAnimator.getAnimatedFraction());
+                                    iv.setImageBitmap(dr);
+                                } if (SaturationAnimator.getAnimatedFraction() == 1) {
+                                    new_species_discovered = false;
+                                }
+                            }
+                        });
+                        SaturationAnimator.start();
+                    }
                     iv.setImageBitmap(newImage);
                     iv.startAnimation(imageFlipEnd);
                 }
@@ -226,16 +256,6 @@ public class GameDial extends LinearLayout {
         asa = new ArcShrinkAnimation(av);
         asa.setDuration(shrinkDuration);
 
-        SaturationAnimator = ValueAnimator.ofFloat(0f, 1f);
-        SaturationAnimator.setDuration(2000);
-        SaturationAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                dr = Globals.toGrayscale(drOriginal, SaturationAnimator.getAnimatedFraction());
-                iv.setImageBitmap(dr);
-            }
-        });
-
         aga = new ArcGrowAnimation(av);
         aga.setDuration(growDuration);
 
@@ -252,29 +272,8 @@ public class GameDial extends LinearLayout {
             public void onAnimationEnd(Animation animation) { av.startAnimation(asa); }
         });
 
-        ada = new ArcShrinkAnimation(av);
-        ada.setDuration(1000);
-
-        ada.setAnimationListener(new Animation.AnimationListener()
-        {
-            @Override
-            public void onAnimationStart(Animation animation){
-                Animation Focus = AnimationUtils.loadAnimation(getContext(),
-                        R.anim.grow_shrink);
-                md.startAnimation(Focus);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation){}
-
-            @Override
-            public void onAnimationEnd(Animation animation)
-            {
-                SaturationAnimator.start();
-                aga.updateAngle();
-                av.startAnimation(aga);
-            }
-        });
+        SaturationAnimator = ValueAnimator.ofFloat(0f, 1f);
+        SaturationAnimator.setDuration(2000);
 
         messageHandler = new Handler();
         imageFlipStart = AnimationUtils.loadAnimation(getContext(),

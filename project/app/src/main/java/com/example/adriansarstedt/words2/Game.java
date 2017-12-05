@@ -179,7 +179,6 @@ public class Game extends AppCompatActivity {
 
                 lastAnimal = Globals.Animals.get(A);
 
-                gameDial.regenerate(lastAnimal);
                 animateNewText();
 
                 int random = RandomGenerator.nextInt(50);
@@ -202,12 +201,18 @@ public class Game extends AppCompatActivity {
 
                 if (!PreviouslyDiscoveredAnimals.contains(Globals.Animals.get(A))) {
                     PreviouslyDiscovered = false;
-
                     NewlyDiscoveredAnimals.add(Globals.Animals.get(A));
-
                 } else {
                     PreviouslyDiscovered = true;
                 }
+
+                if (PreviouslyDiscovered) {
+                    popInDisplay.newDiscoveryAnimation();
+                } else if (random<=10) {
+                    popInDisplay.newEggAnimation();
+                }
+
+                gameDial.regenerate(lastAnimal, PreviouslyDiscovered);
 
                 focusHandler.removeCallbacksAndMessages(null);
                 focusHandler.postDelayed(new Runnable() {
