@@ -86,7 +86,7 @@ public class GameTextDisplay extends LinearLayout {
                 });
 
                 if (gd != null && !isMessage) {
-                    gd.regenerate(leftPortion+rightPortion, true);
+                    gd.regenerate(leftPortion+rightPortion, false);
                 }
 
                 if (isMessage) {

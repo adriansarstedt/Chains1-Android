@@ -349,7 +349,7 @@ public class GameOverRevised extends Activity {
                 Slogans.set(2-pagesDeleted, "ALL THESE ANIMALS START WITH A "+LastLetter+"!");
                 setupDiscoveredAnimalDisplay(SuggestedAnimals);
             } else {
-                Slogans.set(0, "THERE WERENT ANY OPTIONS FOR YOU THERE");
+                Slogans.set(0, "NOTHING YOU COULD DO");
                 Slogans.remove(2-pagesDeleted);
                 AchievementViewAnimator.removeViewAt(2-pagesDeleted);
             }

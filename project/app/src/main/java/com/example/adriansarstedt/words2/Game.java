@@ -51,8 +51,9 @@ public class Game extends AppCompatActivity {
 
     Character lastLetter, inputLetter;
     int viewWidth = 2000, HighScore, turnTime, NewEggCount = 0, EggCount;
+    float EggProbability = (float) 0.2;
     Random RandomGenerator;
-    boolean run = true, Sound, PreviouslyDiscovered;
+    boolean run = true, Sound, newDiscovery;
 
     MediaPlayer CorrentSound;
     PopupWindow popup;
@@ -182,7 +183,7 @@ public class Game extends AppCompatActivity {
                 animateNewText();
 
                 int random = RandomGenerator.nextInt(50);
-                if (random<=10) {
+                if (random<=(50*EggProbability)) {
                     NewEggCount += 1;
                     EggCount += 1;
                     popInDisplay.newEggAnimation();
@@ -200,19 +201,17 @@ public class Game extends AppCompatActivity {
                 InputTextEdit.setSelection(1);
 
                 if (!PreviouslyDiscoveredAnimals.contains(Globals.Animals.get(A))) {
-                    PreviouslyDiscovered = false;
+                    newDiscovery = true;
+                    popInDisplay.newDiscoveryAnimation();
                     NewlyDiscoveredAnimals.add(Globals.Animals.get(A));
                 } else {
-                    PreviouslyDiscovered = true;
+                    newDiscovery = false;
+                    if (random<=(50*EggProbability)) {
+                        popInDisplay.newEggAnimation();
+                    }
                 }
 
-                if (PreviouslyDiscovered) {
-                    popInDisplay.newDiscoveryAnimation();
-                } else if (random<=10) {
-                    popInDisplay.newEggAnimation();
-                }
-
-                gameDial.regenerate(lastAnimal, PreviouslyDiscovered);
+                gameDial.regenerate(lastAnimal, newDiscovery);
 
                 focusHandler.removeCallbacksAndMessages(null);
                 focusHandler.postDelayed(new Runnable() {

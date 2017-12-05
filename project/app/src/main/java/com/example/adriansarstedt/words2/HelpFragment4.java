@@ -2,37 +2,34 @@ package com.example.adriansarstedt.words2;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class HelpFragment4 extends Fragment {
 
-    TextView e1;
-    GameDial gd;
-    GameTextDisplay gt;
+    TextView e1, e2, e3;
+    View ProgressBar, ProgressBarHolder;
+
+    float DiscoveredCount, PercentageDiscovered, TotalCount;
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (gd != null) {
-            if (isVisibleToUser) {
-                gd.startTimer(new Runnable() {
-                    @Override
-                    public void run() {
-                        gd.displayMessage("Game Over!", null, false);
-                    }
-                });
+        if (isVisibleToUser) {
 
-                gt.animateIn("A", "NT", 5000, gd, false);
-                gt.animateOut("AN", "T", 6500, gd);
-            } else {
-                gd.reset();
-                gt.setTextA("");
-                gt.setTextB("A");
-            }
+            e2.setText(String.valueOf(Math.round(DiscoveredCount)) +" OF "+String.valueOf(Math.round(TotalCount)));
+
+            ResizeWidthAnimation ProgressBarAnimation = new ResizeWidthAnimation(ProgressBar,
+                    Math.round(ProgressBarHolder.getWidth()*PercentageDiscovered));
+            ProgressBarAnimation.setDuration(1000);
+            ProgressBar.startAnimation(ProgressBarAnimation);
         }
     }
 
@@ -40,32 +37,29 @@ public class HelpFragment4 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.help_frag_4, container, false);
 
-        e1 = (TextView) v.findViewById(R.id.e1f3);
-        gd = (GameDial) v.findViewById(R.id.game_dial);
-        gt = (GameTextDisplay) v.findViewById(R.id.game_text_display);
+        e1 = (TextView) v.findViewById(R.id.e1f4);
+        e2 = (TextView) v.findViewById(R.id.e2f4);
+        e3 = (TextView) v.findViewById(R.id.e3f4);
+
+        ProgressBar = (View) v.findViewById(R.id.progressBar);
+        ProgressBarHolder = (View) v.findViewById(R.id.progressBarHolder);
 
         Typeface custom_font_hairline = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Lato-Thin.ttf");
 
         e1.setTypeface(custom_font_hairline);
+        e2.setTypeface(custom_font_hairline);
+        e3.setTypeface(custom_font_hairline);
 
-        e1.setText(getArguments().getString("t1"));
-        gt.setTextA(getArguments().getString("t2"));
-        gt.setTextB(getArguments().getString("t3"));
+        String DiscoveredCompressed = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("DiscoveredAnimals", "");
+        ArrayList<String> DiscoveredList = new ArrayList<String>(Arrays.asList(DiscoveredCompressed.split("-")));
+        DiscoveredCount = DiscoveredList.size();
+        TotalCount = Globals.Animals.size();
+        PercentageDiscovered = DiscoveredCount/TotalCount;
 
         return v;
     }
 
-    public static HelpFragment4 newInstance(String t1, String t2, String t3) {
-
-        HelpFragment4 f = new HelpFragment4();
-
-        Bundle b = new Bundle();
-        b.putString("t1", t1);
-        b.putString("t2", t2);
-        b.putString("t3", t3);
-
-        f.setArguments(b);
-
-        return f;
+    public static HelpFragment4 newInstance() {
+        return new HelpFragment4();
     }
 }

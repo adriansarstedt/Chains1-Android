@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/e1f4"
+        android:id="@+id/e1f5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
@@ -17,47 +17,41 @@
         android:paddingRight="20dp"
         android:paddingTop="40dp"
         android:textColor="#ffffff"
-        android:text="THE AIM OF THE GAME IS TO DISCOVER ALL SPECIES"/>
+        android:text="COLLECT EGGS TO USE THE RESEARCH CENTER FOR HELP"/>
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_weight="1"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="90dp">
-
-        <View
-            android:id="@+id/progressBarHolder"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:layout_margin="20dp"
-            android:layout_centerVertical="true"
-            android:background="@drawable/progressbar_outer"/>
-
-        <View
-            android:id="@+id/progressBar"
-            android:layout_height="match_parent"
-            android:layout_width="0px"
-            android:layout_centerVertical="true"
-            android:layout_margin="20dp"
-            android:background="@drawable/progressbar_inner"/>
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/e2f4"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="25sp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="20dp"
-        android:textColor="#ffffff"
-        android:text="4/200"/>
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv1f5"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/researchcenter_icon"
+            android:layout_margin="10dp"/>
+
+        <ImageView
+            android:id="@+id/iv2f5"
+            android:layout_width="70dp"
+            android:layout_height="100dp"
+            android:src="@drawable/egg2"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"/>
+
     <TextView
-        android:id="@+id/e3f4"
+        android:id="@+id/e2f5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
@@ -65,7 +59,29 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:textColor="#ffffff"
-        android:text="SPECIES DISCOVERED"/>
+        android:text="GET HINTS"/>
+
+    <TextView
+        android:id="@+id/e3f5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textColor="#ffffff"
+        android:text="GET MORE TIME"/>
+
+    <TextView
+        android:id="@+id/e4f5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textColor="#ffffff"
+        android:text="SKIP A TURN"/>
 
     <Space
         android:layout_width="match_parent"

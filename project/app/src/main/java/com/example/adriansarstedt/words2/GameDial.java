@@ -129,7 +129,7 @@ public class GameDial extends LinearLayout {
         av.startAnimation(aga);
     }
 
-    public void regenerate(String newAnimal, boolean previouslyDiscovered) {
+    public void regenerate(String newAnimal, boolean newDiscovery) {
 
         score += 1;
 
@@ -137,7 +137,7 @@ public class GameDial extends LinearLayout {
                 ctx.getResources().getIdentifier(newAnimal.toLowerCase() + "imagesmall", "drawable",
                         getContext().getPackageName()));
 
-        if (previouslyDiscovered) {
+        if (newDiscovery) {
             discovery();
         } else {
             updateDisplay(String.valueOf(score), drOriginal, 80);
@@ -152,10 +152,7 @@ public class GameDial extends LinearLayout {
 
         dr = Globals.toGrayscale(drOriginal, 0);
         new_species_discovered = true;
-        //av.startColorTransition();
         this.startAnimation(focus);
-
-
         updateDisplay(String.valueOf(score), dr, 80);
 
     }
