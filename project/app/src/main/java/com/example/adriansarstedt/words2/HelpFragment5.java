@@ -72,9 +72,9 @@ public class HelpFragment5 extends Fragment {
             public void run() {
                 count++;
                 if (count%2==1) {
-                    ShakeAnimator.runAniamtionLarge(iv1);
+                    ShakeAnimator.runAnimationLarge(iv1);
                 } else {
-                    ShakeAnimator.runAniamtionLarge(iv2);
+                    ShakeAnimator.runAnimationLarge(iv2);
                 }
                 animationHandler.postDelayed(this, 2000);
             }

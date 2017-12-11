@@ -30,6 +30,7 @@ public class HelpFragment4 extends Fragment {
                     Math.round(ProgressBarHolder.getWidth()*PercentageDiscovered));
             ProgressBarAnimation.setDuration(1000);
             ProgressBar.startAnimation(ProgressBarAnimation);
+            System.out.println("testing");
         }
     }
 
@@ -41,20 +42,22 @@ public class HelpFragment4 extends Fragment {
         e2 = (TextView) v.findViewById(R.id.e2f4);
         e3 = (TextView) v.findViewById(R.id.e3f4);
 
-        ProgressBar = (View) v.findViewById(R.id.progressBar);
-        ProgressBarHolder = (View) v.findViewById(R.id.progressBarHolder);
-
         Typeface custom_font_hairline = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Lato-Thin.ttf");
 
         e1.setTypeface(custom_font_hairline);
         e2.setTypeface(custom_font_hairline);
         e3.setTypeface(custom_font_hairline);
 
+        ProgressBar = (View) v.findViewById(R.id.progressBar);
+        ProgressBarHolder = (View) v.findViewById(R.id.progressBarHolder);
+
         String DiscoveredCompressed = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("DiscoveredAnimals", "");
         ArrayList<String> DiscoveredList = new ArrayList<String>(Arrays.asList(DiscoveredCompressed.split("-")));
         DiscoveredCount = DiscoveredList.size();
         TotalCount = Globals.Animals.size();
         PercentageDiscovered = DiscoveredCount/TotalCount;
+
+        e2.setText(String.valueOf(Math.round(DiscoveredCount)) +" OF "+String.valueOf(Math.round(TotalCount)));
 
         return v;
     }

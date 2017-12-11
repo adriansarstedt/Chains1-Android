@@ -334,7 +334,7 @@ public class Game extends AppCompatActivity {
         popup = new PopupWindow(context);
         popup.setContentView(layout);
         popup.setWidth(getWindowManager().getDefaultDisplay().getWidth()-100);
-        popup.setHeight(600);
+        popup.setHeight(700);
         popup.setFocusable(true);
 
         popup.setBackgroundDrawable(new BitmapDrawable());

@@ -25,7 +25,7 @@ public class ArcView extends View {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeWidth(50);
+        mPaint.setStrokeWidth(40);
         mPaint.setColor(Color.WHITE);
 
     }

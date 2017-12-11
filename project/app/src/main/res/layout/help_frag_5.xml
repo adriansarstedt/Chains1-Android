@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_orange_dark"
+    android:background="@drawable/help_fragment_background_center"
     android:gravity="center_horizontal"
     android:textAlignment="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/e1f5"
@@ -17,7 +18,7 @@
         android:paddingRight="20dp"
         android:paddingTop="40dp"
         android:textColor="#ffffff"
-        android:text="COLLECT EGGS TO USE THE RESEARCH CENTER FOR HELP"/>
+        android:text="COLLECT EGGS AND USE THE RESEARCH CENTER FOR HELP"/>
 
     <Space
         android:layout_width="match_parent"

@@ -4,10 +4,7 @@
     android:id="@+id/activity_help_popup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_marginBottom="15dp"
     android:orientation="vertical"
     tools:context="com.example.adriansarstedt.words2.HelpPopup">
 
@@ -20,18 +17,22 @@
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="70dp"
-            android:layout_marginBottom="70dp">
-        </android.support.v4.view.ViewPager>
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="80dp"
+            />
 
         <Button
+            android:id="@+id/GotItButton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_margin="15dp"
             android:text="GOT IT!"
+            android:textSize="30dp"
+            android:textColor="#cc01c23c"
             android:textAlignment="center"
             android:layout_alignParentBottom="true"
             android:onClick="Close"
-            android:background="@android:color/holo_green_dark"/>
+            android:background="@drawable/help_button_background"/>
     </RelativeLayout>
 
 
