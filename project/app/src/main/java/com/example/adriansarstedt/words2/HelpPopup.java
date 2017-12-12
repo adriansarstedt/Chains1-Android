@@ -3,6 +3,7 @@ package com.example.adriansarstedt.words2;
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -27,6 +28,7 @@ public class HelpPopup extends FragmentActivity {
     MyPagerAdapter adapter;
     ViewPager pager;
     Button GotItButton;
+    ColorDrawable Background;
 
     int ButtonHeight, ButtonWidth;
     ScaleAnimation growAnim, shrinkAnim;
@@ -41,20 +43,28 @@ public class HelpPopup extends FragmentActivity {
             window.setStatusBarColor(Color.parseColor("#CC0033"));
         }
 
+        Background = new ColorDrawable(Color.parseColor("#55FF0033"));
+        findViewById(R.id.activity_help_popup).setBackground(Background);
+
         adapter = new MyPagerAdapter(getSupportFragmentManager());
 
         pager = (ViewPager) findViewById(R.id.pager);
         GotItButton = (Button) findViewById(R.id.GotItButton);
 
-        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Lato-Thin.ttf");
-        //GotItButton.setTypeface(custom_font);
-
         pager.setAdapter(adapter);
+
+        if (getIntent().getBooleanExtra("FromResearchCenter", false)) {
+            pager.setCurrentItem(3);
+        }
 
         runIntroAnimations();
     }
 
     private void runIntroAnimations() {
+
+        ObjectAnimator bgAnim = ObjectAnimator.ofInt(Background, "alpha", 0, 255);
+        bgAnim.setDuration(1000);
+        bgAnim.start();
 
         Animation SlideIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pull_in_right);
         pager.startAnimation(SlideIn);
@@ -128,6 +138,10 @@ public class HelpPopup extends FragmentActivity {
         final Animation SlideOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pull_out_right);
 
         pager.startAnimation(SlideOut);
+
+        ObjectAnimator bgAnim = ObjectAnimator.ofInt(Background, "alpha", 255, 0);
+        bgAnim.setDuration(300);
+        bgAnim.start();
 
         GotItButton.setPivotY(Math.round(GotItButton.getHeight()/2));
         GotItButton.setPivotX(Math.round(GotItButton.getWidth()/2));

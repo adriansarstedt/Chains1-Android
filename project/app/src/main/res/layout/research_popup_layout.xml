@@ -47,7 +47,7 @@
             android:textSize="20sp"
             android:layout_toLeftOf="@id/ItemEggImage1"
             android:layout_centerVertical="true"
-            android:text="4" />
+            android:text="1" />
 
 
     </RelativeLayout>
@@ -97,7 +97,7 @@
             android:textSize="20sp"
             android:layout_toLeftOf="@id/ItemEggImage2"
             android:layout_centerVertical="true"
-            android:text="6" />
+            android:text="2" />
 
     </RelativeLayout>
 
@@ -148,7 +148,7 @@
             android:layout_toStartOf="@id/ItemEggImage3"
             android:layout_centerVertical="true"
             android:textAlignment="center"
-            android:text="20" />
+            android:text="3" />
 
 
     </RelativeLayout>

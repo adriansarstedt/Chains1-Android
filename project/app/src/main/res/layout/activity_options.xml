@@ -140,21 +140,6 @@
             android:paddingLeft="40dp"
             android:paddingRight="40dp">
 
-            <ImageButton
-                android:id="@+id/AceButton"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/ace_logo"
-                android:onClick="AceButtonPressed"/>
-            <TextView
-                android:id="@+id/AceLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/AceButton"
-                android:paddingTop="5dp"
-                android:text="Ace"/>
         </RelativeLayout>
 
         <RelativeLayout

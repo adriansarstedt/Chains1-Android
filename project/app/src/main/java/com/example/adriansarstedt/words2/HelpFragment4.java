@@ -16,13 +16,14 @@ public class HelpFragment4 extends Fragment {
 
     TextView e1, e2, e3;
     View ProgressBar, ProgressBarHolder;
+    Boolean run = false;
 
     float DiscoveredCount, PercentageDiscovered, TotalCount;
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
+        if (isVisibleToUser && run) {
 
             e2.setText(String.valueOf(Math.round(DiscoveredCount)) +" OF "+String.valueOf(Math.round(TotalCount)));
 
@@ -59,6 +60,7 @@ public class HelpFragment4 extends Fragment {
 
         e2.setText(String.valueOf(Math.round(DiscoveredCount)) +" OF "+String.valueOf(Math.round(TotalCount)));
 
+        run = true;
         return v;
     }
 

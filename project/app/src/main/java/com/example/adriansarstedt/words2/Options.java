@@ -133,10 +133,11 @@ public class Options extends AppCompatActivity {
     }
 
     public void CreditsButtonPressed(View view) {
-
-    }
-
-    public void AceButtonPressed(View view) {
-
+        Intent AlertPopupIntent = new Intent(this, AlertPopup.class);
+        AlertPopupIntent.putExtra("Title", "Credits");
+        AlertPopupIntent.putExtra("Description", "This game was designed and created by Adrian Sarstedt, including graphics, sound and game mechanics. See more projects on my website!\n");
+        AlertPopupIntent.putExtra("Type", "adriansarstedt");
+        startActivity(AlertPopupIntent);
+        overridePendingTransition(0, 0);
     }
 }

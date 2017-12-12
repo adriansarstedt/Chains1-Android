@@ -350,17 +350,17 @@ public class Game extends AppCompatActivity {
         ItemTitle3.setTypeface(custom_font_hairline);
 
         // Displaying the popup at the specified location
-        popup.showAtLocation(layout, Gravity.NO_GRAVITY, 50, (int) Globals.dipToPixels(this, 80));
+        popup.showAtLocation(layout, Gravity.NO_GRAVITY, 50, (int) Globals.dipToPixels(this, 100));
 
     }
 
     public void GetHint(View view) {
 
-        if (EggCount>=4) {
+        if (EggCount>=1) {
             popup.dismiss();
 
-            EggCount -= 4;
-            NewEggCount -= 4;
+            EggCount -= 1;
+            NewEggCount -= 1;
 
             ArrayList<String> SuggestedAnimals = Globals.FindAnimalsStartingWith(Character.toString(lastLetter).toUpperCase(), InputAnimalList);
 
@@ -387,11 +387,11 @@ public class Game extends AppCompatActivity {
 
     public void GetMoreTime(View view) {
 
-        if (EggCount>=6) {
+        if (EggCount>=2) {
             popup.dismiss();
 
-            EggCount -= 6;
-            NewEggCount -= 6;
+            EggCount -= 2;
+            NewEggCount -= 2;
 
             gameDial.resetTimer();
         } else {
@@ -402,11 +402,11 @@ public class Game extends AppCompatActivity {
 
     public void Skip(View view) {
 
-        if (EggCount>=20) {
+        if (EggCount>=3) {
             popup.dismiss();
 
-            EggCount -= 20;
-            NewEggCount -= 20;
+            EggCount -= 3;
+            NewEggCount -= 3;
 
             ArrayList<String> SuggestedAnimals = Globals.FindAnimalsStartingWith(Character.toString(lastLetter).toUpperCase(), null);
 

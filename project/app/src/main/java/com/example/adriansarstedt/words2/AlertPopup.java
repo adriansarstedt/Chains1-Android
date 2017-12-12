@@ -2,12 +2,14 @@ package com.example.adriansarstedt.words2;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -37,18 +39,33 @@ public class AlertPopup extends Activity {
 
         String Title = getIntent().getStringExtra("Title");
         String Description = getIntent().getStringExtra("Description");
+        String Type = getIntent().getStringExtra("Type");
 
         TextView TitleView = (TextView) findViewById(R.id.AlertTitle);
         TextView DescriptionView = (TextView) findViewById(R.id.AlertDescription);
 
-        Button CancelButton = (Button) findViewById(R.id.AlertCancel);
-        Button ContinueButton = (Button) findViewById(R.id.AlertContinue);
+        Button LeftButton = (Button) findViewById(R.id.AlertCancel);
+        Button RightButton = (Button) findViewById(R.id.AlertContinue);
+
+        if (Type != null && Type.equals("adriansarstedt")) {
+            LeftButton.setText("See More");
+            LeftButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://adriansarstedt.com/")));
+                }
+            });
+            RightButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    runExitAnimation();
+                }
+            });
+        }
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Lato-Thin.ttf");
         TitleView.setTypeface(custom_font);
         DescriptionView.setTypeface(custom_font);
-        CancelButton.setTypeface(custom_font);
-        ContinueButton.setTypeface(custom_font);
+        LeftButton.setTypeface(custom_font);
+        RightButton.setTypeface(custom_font);
 
         TitleView.setText(Title);
         DescriptionView.setText(Description);
@@ -93,7 +110,8 @@ public class AlertPopup extends Activity {
 
         PreferenceManager.getDefaultSharedPreferences(this).edit().putString("DiscoveredAnimals", "researchcenter").apply();
         PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("EggCount", 0).apply();
-
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("HomeOpened", 0).apply();
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("ResearchCenterOpened", 0).apply();
         SharedPreferences HighScoreManager = this.getSharedPreferences("HighScores", Context.MODE_PRIVATE);
         SharedPreferences.Editor HighScoreEditor = HighScoreManager.edit();
         HighScoreEditor.putInt(Globals.User+Globals.Difficulty, 0);

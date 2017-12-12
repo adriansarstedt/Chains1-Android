@@ -26,7 +26,7 @@
             android:background="@drawable/home_icon"
             android:onClick="ReturnHome"/>
 
-        <View
+        <ImageButton
             android:id="@+id/progressBarHolder"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
@@ -35,6 +35,7 @@
             android:layout_marginLeft="10dp"
             android:layout_margin="10dp"
             android:layout_centerVertical="true"
+            android:onClick="showHelp"
             android:background="@drawable/progressbar_outer"/>
 
         <View

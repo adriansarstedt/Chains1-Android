@@ -67,6 +67,11 @@ public class ResearchCenter extends AppCompatActivity {
                 gameStartHandler.removeCallbacks(this);
             }
         }, 1200);
+
+        if (PreferenceManager.getDefaultSharedPreferences(this).getInt("ResearchCenterOpened", 0) == 0) {
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("ResearchCenterOpened", 1).apply();
+            showHelp(null);
+        }
     }
 
     @Override
@@ -109,6 +114,16 @@ public class ResearchCenter extends AppCompatActivity {
                 Math.round(findViewById(R.id.progressBarHolder).getWidth()*PercentageDiscovered));
         ProgressBarAnimation.setDuration(1000);
         ProgressBar.startAnimation(ProgressBarAnimation);
+    }
+
+    public void showHelp(View view) {
+        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.button_click);
+        mp.start();
+
+        Intent HelpIntent = new Intent(this, HelpPopup.class);
+        HelpIntent.putExtra("FromResearchCenter", true);
+        startActivity(HelpIntent);
+        overridePendingTransition(0, 0);
     }
 
     public void ReturnHome(View view) {

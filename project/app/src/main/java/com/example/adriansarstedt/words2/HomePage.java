@@ -65,6 +65,15 @@ public class HomePage extends AppCompatActivity {
             }
         }, 500);
 
+        int Opened = PreferenceManager.getDefaultSharedPreferences(this).getInt("HomeOpened", 0);
+        if (Opened == 0) {
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("HomeOpened", 1).apply();
+            Intent HelpIntent = new Intent(this, HelpPopup.class);
+            startActivity(HelpIntent);
+            overridePendingTransition(0, 0);
+            //open for the first time
+        }
+
     }
 
     public void StartAnimations() {
@@ -184,12 +193,21 @@ public class HomePage extends AppCompatActivity {
         overridePendingTransition(R.anim.pull_in_left, R.anim.pull_out_right);
     }
 
+    public void ModeButtonPressed(View view) {
+        Intent AlertPopupIntent = new Intent(this, AlertPopup.class);
+        AlertPopupIntent.putExtra("Title", "Not Available Yet");
+        AlertPopupIntent.putExtra("Description", "Sorry, more catagories are coming soon!");
+        AlertPopupIntent.putExtra("Type", "adriansarstedt");
+        startActivity(AlertPopupIntent);
+        overridePendingTransition(0, 0);
+    }
+
     public void HelpButtonPressed(View view) {
         MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.button_click);
         mp.start();
 
-        Intent ResearchCenterIntent = new Intent(this, HelpPopup.class);
-        startActivity(ResearchCenterIntent);
+        Intent HelpIntent = new Intent(this, HelpPopup.class);
+        startActivity(HelpIntent);
         overridePendingTransition(0, 0);
     }
 }
