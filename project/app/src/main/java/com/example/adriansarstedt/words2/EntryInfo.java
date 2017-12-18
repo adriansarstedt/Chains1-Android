@@ -127,7 +127,7 @@ public class EntryInfo extends Activity {
             EntryName.setText("The " + Globals.Animals.get(position));
         } else {
             ImageFrame.setBackgroundResource(R.drawable.image_background_undiscovered_large);
-            ImageBitmap = toGrayscale(ImageBitmap);
+            ImageBitmap = Globals.toGrayscale(ImageBitmap, 0);
             EntryName.setText("The " + generateSecretString(Globals.Animals.get(position)));
         }
 
@@ -204,22 +204,6 @@ public class EntryInfo extends Activity {
                 overridePendingTransition(0, 0);
             }
         });
-    }
-
-    private Bitmap toGrayscale(Bitmap bmpOriginal) {
-        int width, height;
-        height = bmpOriginal.getHeight();
-        width = bmpOriginal.getWidth();
-
-        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(bmpGrayscale);
-        Paint paint = new Paint();
-        ColorMatrix cm = new ColorMatrix();
-        cm.setSaturation(0);
-        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
-        paint.setColorFilter(f);
-        c.drawBitmap(bmpOriginal, 0, 0, paint);
-        return bmpGrayscale;
     }
 
     public String generateSecretString(String key) {

@@ -37,7 +37,7 @@ public class Globals extends Application {
             "Ostrich", "Otter", "Owl", "Oyster", "Panther", "Parrot", "Peacock", "Pelican", "Penguin",
             "Pheasant", "Pig", "Pigeon", "Polarbear", "Pony", "Porcupine", "Porpoise", "Prairiedog", "Quail",
             "Quetzal", "Rabbit", "Raccoon", "Ram", "Rat", "Raven", "Redpanda", "Reindeer", "Rhinoceros", "Rook",
-            "Salamander", "Salmon", "Sanddollar", "Sandpiper", "Sardine", "Seastar", "Sealion", "Seaurchin", "Seahorse", "Seal",
+            "Salamander", "Salmon", "Sanddollar", "Sandpiper", "Sardine", "Seastar", "Sealion", "Urchin", "Seahorse", "Seal",
             "Shark", "Sheep", "Skunk", "Sloth", "Snail", "Snake", "Spider", "Squirrel", "Starling", "Swan",
             "Tapir", "Tarsier", "Termite", "Tiger", "Toad", "Turkey", "Turtle", "Wallaby", "Walrus", "Wasp", "Waterbuffalo",
             "Weasel", "Whale", "Wolf", "Wolverine", "Wombat", "Wren", "Yak", "Zebra"));

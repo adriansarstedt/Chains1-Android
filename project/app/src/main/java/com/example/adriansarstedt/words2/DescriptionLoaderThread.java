@@ -83,6 +83,7 @@ public class DescriptionLoaderThread extends AsyncTask<Integer, Void, CharSequen
             }
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println(Globals.Animals.get(position).toLowerCase() + "information.txt");
         }
         return (finalText);
     }

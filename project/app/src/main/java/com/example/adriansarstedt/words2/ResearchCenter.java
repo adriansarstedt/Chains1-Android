@@ -2,6 +2,7 @@ package com.example.adriansarstedt.words2;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -10,6 +11,13 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.AlignmentSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.Window;
@@ -20,6 +28,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,6 +81,17 @@ public class ResearchCenter extends AppCompatActivity {
         if (PreferenceManager.getDefaultSharedPreferences(this).getInt("ResearchCenterOpened", 0) == 0) {
             PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("ResearchCenterOpened", 1).apply();
             showHelp(null);
+        }
+
+        AssetManager assetManager = getApplicationContext().getAssets();
+        InputStream input;
+
+        for (int x=0; x<Globals.Animals.size(); x++) {
+            try {
+                input = assetManager.open(Globals.Animals.get(x).toLowerCase() + "information.txt");
+            } catch (IOException e) {
+                System.out.println(Globals.Animals.get(x).toLowerCase() + "information.txt");
+            }
         }
     }
 
